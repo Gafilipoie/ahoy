@@ -1079,8 +1079,8 @@ HorizontalSlider.prototype.startAutoScroll = function (direction) {
 HorizontalSlider.prototype.stopAutoScroll = function (direction) {
 
 				var self = this;
-				setTimeout(
-								function(){
+				// setTimeout(
+				// 				function(){
 												clearInterval(self.autoScrollInterval);
 												self.isSliding = false;
 
@@ -1093,8 +1093,8 @@ HorizontalSlider.prototype.stopAutoScroll = function (direction) {
 												else {
 																self.centerSlider();
 												}
-								}
-				, 300);
+								// }
+				// , 0);
 
 }
 
