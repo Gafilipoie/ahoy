@@ -261,23 +261,36 @@ HorizontalSlider.prototype.initEvents = function() {
 
 				if (clientDevice == 'desktop') {
 
-							$('#hover-prev').on('mouseenter', function(ev){
-											if (!self.navBarClicked)
-															self.startAutoScroll('right');
+						$("#hover-prev").each(function() {
+							$(this).on("mouseenter", function(){
+								if (!self.navBarClicked)
+									self.startAutoScroll('right');
 							});
-							$('#hover-next').on('mouseenter', function(ev){
-											if (!self.navBarClicked)
-															self.startAutoScroll('left');
+							$(this).on("mouseleave", function(){
+								self.navBarClicked = false;
+								self.stopAutoScroll('left');
 							});
+							$(this).on("click", function(){
+								self.navBarClicked = true;
+								self.slidePrev(1);
+							});
+						});
 
-							$('#hover-prev').on('mouseleave', function(ev){
-											self.navBarClicked = false;
-											self.stopAutoScroll('left');
+						$("#hover-next").each(function() {
+							$(this).on("mouseenter", function(){
+								if (!self.navBarClicked)
+									self.startAutoScroll('left');
 							});
-							$('#hover-next').on('mouseleave', function(ev){
-											self.navBarClicked = false;
-											self.stopAutoScroll('right');
+							$(this).on("mouseleave", function(){
+								self.navBarClicked = false;
+								self.stopAutoScroll('right');
 							});
+							$(this).on("click", function(){
+								self.navBarClicked = true;
+								self.slideNext(1);
+							});
+						});
+
 								//AutoSlide events
 								$('.horizontal-prev span').on('mouseenter', function(ev){
 												if (!self.navBarClicked)
