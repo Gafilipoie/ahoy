@@ -160,6 +160,7 @@ VerticalSlider.prototype.initEvents = function(){
 			mouseUpEvent(ev);
 		});
 	} else {
+		$('#v-hover-prev, #v-hover-next').css( "display", "none");
 		self.slider.off('touchstart').on('touchstart', function(ev){
 			if( ev.originalEvent.touches.length == 1)
 				mouseDownEvent(ev, ev.originalEvent.targetTouches[0].pageX, ev.originalEvent.targetTouches[0].pageY, self);
@@ -230,28 +231,59 @@ VerticalSlider.prototype.initEvents = function(){
 	});
 
 	if (clientDevice == 'desktop') {
+		// Added new - This is the working version
+		$("#v-hover-prev").each(function() {
+			$(this).on("mouseenter", function(){
+				if (!self.navBarClicked)
+					self.startAutoScroll('down');
+			});
+			$(this).on("mouseleave", function(){
+				self.navBarClicked = false;
+				self.stopAutoScroll('up');
+			});
+			$(this).on("click", function(){
+				self.navBarClicked = true;
+				self.slidePrev(1);
+			});
+		});
+
+		$("#v-hover-next").each(function() {
+			$(this).on("mouseenter", function(){
+				if (!self.navBarClicked)
+					self.startAutoScroll('up');
+			});
+			$(this).on("mouseleave", function(){
+				self.navBarClicked = false;
+				self.stopAutoScroll('down');
+			});
+			$(this).on("click", function(){
+				self.navBarClicked = true;
+				self.slideNext(1);
+			});
+		});
+		// Added new - This is the working version
 
 		$('.vertical-pagination li').on('click', function(ev){ev.stopImmediatePropagation(); self.goToSlide($(this).index());});
 
-		$('.vertical-prev span').on('mouseenter', function(ev){
-			if (!self.navBarClicked)
-				setTimeout(function(){self.startAutoScroll('down');}, this.slideTime);
-		});
-
-		$('.vertical-next span').on('mouseenter', function(ev){
-			if (!self.navBarClicked)
-				setTimeout(function(){self.startAutoScroll('up');}, this.slideTime);
-		});
-
-		$('.vertical-prev span').on('mouseleave', function(ev){
-				self.navBarClicked = false;
-				self.stopAutoScroll('down');
-		});
-
-		$('.vertical-next span').on('mouseleave', function(ev){
-			self.navBarClicked = false;
-			self.stopAutoScroll('up');
-		});
+		// $('.vertical-prev span').on('mouseenter', function(ev){
+		// 	if (!self.navBarClicked)
+		// 		setTimeout(function(){self.startAutoScroll('down');}, this.slideTime);
+		// });
+		//
+		// $('.vertical-next span').on('mouseenter', function(ev){
+		// 	if (!self.navBarClicked)
+		// 		setTimeout(function(){self.startAutoScroll('up');}, this.slideTime);
+		// });
+		//
+		// $('.vertical-prev span').on('mouseleave', function(ev){
+		// 		self.navBarClicked = false;
+		// 		self.stopAutoScroll('down');
+		// });
+		//
+		// $('.vertical-next span').on('mouseleave', function(ev){
+		// 	self.navBarClicked = false;
+		// 	self.stopAutoScroll('up');
+		// });
 
 		$('vertical-container').on('mouseleave', function() { clearInterval(this.autoScrollInterval); })
 		$('vertical-slider').on('mouseenter', function() { clearInterval(self.autoScrollInterval); })
@@ -273,7 +305,6 @@ VerticalSlider.prototype.initEvents = function(){
 	if (self.eventsAttached) return 0;  // !!! Don't atach other events
 	self.eventsAttached = true;
 
-
 	//$('#guide-image').on('click', function() { if (self.currentVIndex == 0) $(this).hide(); });
 
 	self.vContainer.on('click', function(ev){ev.stopImmediatePropagation();})
@@ -282,7 +313,6 @@ VerticalSlider.prototype.initEvents = function(){
 
 	function mouseDownEvent(ev, x, y, self) {
 		//if (self.isSliding) return;
-
 		clickedIndex =  convertID($(ev.target).closest('li').attr('id'));
 		self.slider.addClass('clicked');
 		self.slider.removeClass('dragable');
@@ -293,7 +323,6 @@ VerticalSlider.prototype.initEvents = function(){
 
 		//if slider is clicked while goToSlide animation
 		if (self.jumpDistance > 1) {
-
 			var distanceUp = self.getDistanceUp(clickedIndex);
 			var distanceDown = self.getDistanceDown(clickedIndex);
 			self.interruptGoTo = true;
@@ -320,7 +349,6 @@ VerticalSlider.prototype.initEvents = function(){
 
 		if(self.isSliding) ev.preventDefault();
 		self.slider.stop(false,true).css({'top' : self.slider.css('top')})
-
 	}
 
 	function mouseMoveEvent(ev, x, y, self) {

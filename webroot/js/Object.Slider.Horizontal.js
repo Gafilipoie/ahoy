@@ -231,295 +231,283 @@ HorizontalSlider.prototype.hidePagination = function() {
 }
 
 HorizontalSlider.prototype.initEvents = function() {
-				var self = this;
-				var slideWidth = self.getSlideWidth();
-				var leftPosition        = self.getLeftPosition();
+	var self = this;
+	var slideWidth = self.getSlideWidth();
+	var leftPosition        = self.getLeftPosition();
 
-				$('body').bind('click', '#container', function(ev){
-					if (ev.target.id == 'left-column' || ev.target.id == 'container') hSlider.close();
-				});
+	$('body').bind('click', '#container', function(ev){
+		if (ev.target.id == 'left-column' || ev.target.id == 'container') hSlider.close();
+	});
 
-				$('#horizontal-container').on('click', '.video-js', function(ev) {
-					id = 'videoElem' + self.currentHIndex;
-					//var player = new _V_(id, {"controls": true});
-					/*if (player.paused()) player.play();
-					else player.pause();*/
-				});
+	$('#horizontal-container').on('click', '.video-js', function(ev) {
+		id = 'videoElem' + self.currentHIndex;
+		//var player = new _V_(id, {"controls": true});
+		/*if (player.paused()) player.play();
+		else player.pause();*/
+	});
 
-				$('.horizontal-pagination li').on('click', function(ev){self.goToSlide($(this).index());});
-				$('.horizontal-prev span').on('click', function(ev){ self.navBarClicked = true; self.slidePrev(1); });
-				$('.horizontal-next span').on('click', function(ev){ self.navBarClicked = true; self.slideNext(1); });
-				//self.hContainer.on('click', function(ev){console.log('hContainer click')});
+	$('.horizontal-pagination li').on('click', function(ev){self.goToSlide($(this).index());});
+	$('.horizontal-prev span').on('click', function(ev){ self.navBarClicked = true; self.slidePrev(1); });
+	$('.horizontal-next span').on('click', function(ev){ self.navBarClicked = true; self.slideNext(1); });
+	//self.hContainer.on('click', function(ev){console.log('hContainer click')});
 
-				$('#horizontal-slider li .text a').on('click', function(ev){ ev.stopImmediatePropagation(); });
-				$('#horizontal-slider li .text a').on('mouseup', function(ev){
-						ev.stopImmediatePropagation();
-						self.slider.removeClass('clicked');
-						self.slider.removeClass('dragable');
-				}); //!imp
+	$('#horizontal-slider li .text a').on('click', function(ev){ ev.stopImmediatePropagation(); });
+	$('#horizontal-slider li .text a').on('mouseup', function(ev){
+			ev.stopImmediatePropagation();
+			self.slider.removeClass('clicked');
+			self.slider.removeClass('dragable');
+	}); //!imp
 
+	if (clientDevice == 'desktop') {
+		// Added new -> This is the code that is working now
+		$("#h-hover-prev").each(function() {
+			$(this).on("mouseenter", function(){
+				if (!self.navBarClicked)
+					self.startAutoScroll('right');
+			});
+			$(this).on("mouseleave", function(){
+				self.navBarClicked = false;
+				self.stopAutoScroll('left');
+			});
+			$(this).on("click", function(){
+				self.navBarClicked = true;
+				self.slidePrev(1);
+			});
+		});
 
-				if (clientDevice == 'desktop') {
+		$("#h-hover-next").each(function() {
+			$(this).on("mouseenter", function(){
+				if (!self.navBarClicked)
+					self.startAutoScroll('left');
+			});
+			$(this).on("mouseleave", function(){
+				self.navBarClicked = false;
+				self.stopAutoScroll('right');
+			});
+			$(this).on("click", function(){
+				self.navBarClicked = true;
+				self.slideNext(1);
+			});
+		});
+		// Added new -> This is the code that is working now
 
-						$("#hover-prev").each(function() {
-							$(this).on("mouseenter", function(){
-								if (!self.navBarClicked)
-									self.startAutoScroll('right');
-							});
-							$(this).on("mouseleave", function(){
-								self.navBarClicked = false;
-								self.stopAutoScroll('left');
-							});
-							$(this).on("click", function(){
-								self.navBarClicked = true;
-								self.slidePrev(1);
-							});
-						});
+		//AutoSlide events
+		// $('.horizontal-prev span').on('mouseenter', function(ev){
+		// 				if (!self.navBarClicked)
+		// 								setTimeout(function(){self.startAutoScroll('right');}, self.slideTime);
+		// });
+		// $('.horizontal-next span').on('mouseenter', function(ev){
+		// 				if (!self.navBarClicked)
+		// 								setTimeout(function(){self.startAutoScroll('left');}, self.slideTime);
+		// });
+		//
+		// $('.horizontal-prev span').on('mouseleave', function(ev){
+		// 				self.navBarClicked = false;
+		// 				self.stopAutoScroll('left');
+		// });
+		// $('.horizontal-next span').on('mouseleave', function(ev){
+		// 				self.navBarClicked = false;
+		// 				self.stopAutoScroll('right');
+		// });
 
-						$("#hover-next").each(function() {
-							$(this).on("mouseenter", function(){
-								if (!self.navBarClicked)
-									self.startAutoScroll('left');
-							});
-							$(this).on("mouseleave", function(){
-								self.navBarClicked = false;
-								self.stopAutoScroll('right');
-							});
-							$(this).on("click", function(){
-								self.navBarClicked = true;
-								self.slideNext(1);
-							});
-						});
+		$('horizontal-container').on('mouseleave', function() { clearInterval(self.autoScrollInterval); })
+		$('horizontal-slider').on('mouseenter', function() { clearInterval(self.autoScrollInterval); })
 
-								//AutoSlide events
-								$('.horizontal-prev span').on('mouseenter', function(ev){
-												if (!self.navBarClicked)
-																setTimeout(function(){self.startAutoScroll('right');}, self.slideTime);
-								});
-								$('.horizontal-next span').on('mouseenter', function(ev){
-												if (!self.navBarClicked)
-																setTimeout(function(){self.startAutoScroll('left');}, self.slideTime);
-								});
+		self.slider.on('mousewheel', function(event, delta, deltaX, deltaY) {
+			if(!window.isMagicMouse && parseInt(deltaY) - deltaY != 0) window.isMagicMouse = true;
+			if (self.isSliding == true) return 0
+			if(deltaY > 0) {
+				self.scrollPrev(deltaY);
+			} else if(deltaY < 0) {
+				self.scrollNext(deltaY);
+			}
+		});
+	}
 
-								$('.horizontal-prev span').on('mouseleave', function(ev){
-												self.navBarClicked = false;
-												self.stopAutoScroll('left');
-								});
-								$('.horizontal-next span').on('mouseleave', function(ev){
-												self.navBarClicked = false;
-												self.stopAutoScroll('right');
-								});
+	if(!Modernizr.touch) {
+		self.slider.on('mousedown', function(ev){
+			mouseDownEvent(ev, ev.clientX, ev.clientY, self);
+		})
 
-								$('horizontal-container').on('mouseleave', function() { clearInterval(self.autoScrollInterval); })
-								$('horizontal-slider').on('mouseenter', function() { clearInterval(self.autoScrollInterval); })
+		self.slider.on('mousemove', function(ev){
+			clearInterval(self.autoScrollInterval);
+			mouseMoveEvent(ev, ev.clientX, ev.clientY, self);
+		})
 
-								self.slider.on('mousewheel', function(event, delta, deltaX, deltaY) {
-												if(!window.isMagicMouse && parseInt(deltaY) - deltaY != 0) window.isMagicMouse = true;
-												if (self.isSliding == true) return 0
-												if(deltaY > 0) {
-																self.scrollPrev(deltaY);
-												} else if(deltaY < 0) {
-																self.scrollNext(deltaY);
-												}
-								});
+		self.slider.on('mouseup', function(ev){
+			mouseUpEvent(ev);
+		})
+	} else {
+		$('#h-hover-prev, #h-hover-next').css( "display", "none");
+		self.slider.on('touchstart', function(ev){
+			if( ev.originalEvent.touches.length == 1)
+				mouseDownEvent(ev, ev.originalEvent.targetTouches[0].pageX, ev.originalEvent.targetTouches[0].pageY, self);
+		})
+
+		self.slider.on('touchmove', function(ev){
+			if( ev.originalEvent.touches.length == 1)
+				mouseMoveEvent(ev, ev.originalEvent.targetTouches[0].pageX, ev.originalEvent.targetTouches[0].pageY, self);
+		})
+
+		self.slider.on('touchend', function(ev){
+			mouseUpEvent(ev);
+		})
+	}
+
+	var clickedIndex = -1;
+
+	function mouseDownEvent(ev, x, y, self) {
+		clickedIndex =  convertID($(ev.target).closest('li').attr('id'));
+		if (self.isVideo(clickedIndex)) return;
+		self.slider.addClass('clicked');
+		self.slider.removeClass('dragable');
+		self.lastTouchMoveX = self.startTouchX = x;
+		self.lastTouchMoveY = self.startTouchY = y;
+		self.difTouchX = self.startTouchX;
+		self.difTouchY = self.startTouchY;
+
+		//if slider is clicked while goToSlide animation
+		if (self.jumpDistance > 1) {
+			var distanceLeft = self.getDistanceLeft(clickedIndex);
+			var distanceRight = self.getDistanceRight(clickedIndex);
+			self.interruptGoTo = true;
+			self.jumpDistance = 0;
+
+			if (distanceLeft < distanceRight) {
+				for (var i=0; i<distanceLeft; i++) {
+					self.moveLastLeft();
+				}
+			} else {
+				for (var i=0; i<distanceRight; i++) {
+					self.moveFirstRight();
+				}
+			}
+			self.slider.stop();
+			self.currentHIndex = clickedIndex;
+			self.setCurrentIndex(clickedIndex);
+			ev.preventDefault();
+			self.centerSlider();
+			return
+		}
+
+		if(self.isSliding) ev.preventDefault();
+		self.slider.stop(false,true).css({'left' : self.slider.css('left')})
+	}
+
+	function mouseMoveEvent(ev, x, y, self) {
+		ev.preventDefault();
+		if(!self.slider.hasClass('clicked')) return;
+
+		self.slider.addClass('dragable');
+		self.difTouchX = self.lastTouchMoveX;
+		self.difTouchY = self.lastTouchMoveY;
+		curX = x;
+		curY = y;
+
+		var sliderLeft = curX - self.lastTouchMoveX;
+		self.slider.stop(false,true).css({'left' : '+='+sliderLeft});
+		var currentLeft  = self.getCurrentLeft();
+		var leftPosition = self.getLeftPosition();
+		var difference  = leftPosition - currentLeft;
+
+		if(difference > 0 && difference > slideWidth /2 ) {
+			self.moveFirstRight();
+			self.hideBackButton();
+			self.setCurrentIndex(self.currentHIndex+1);
+		} else if (difference < 0 && Math.abs(difference) > slideWidth/2) {
+			self.moveLastLeft();
+			self.hideBackButton();
+			self.setCurrentIndex(self.currentHIndex-1);
+		}
+		self.lastTouchMoveX = curX;
+		self.lastTouchMoveY = curY;
+	}
+
+	self.lastIndex = self.currentHIndex;
+
+	function mouseUpEvent(ev){
+		ev.stopPropagation();
+		self.slider.removeClass('clicked');
+		self.slider.removeClass('dragable');
+
+		if(clientDevice == 'mobile') {
+			var difY = (self.difTouchY - self.lastTouchMoveY)/ 15;
+			var difX = (self.difTouchX - self.lastTouchMoveX)/ 15;
+		} else {
+			var difY = (self.difTouchY - self.lastTouchMoveY)/ self.ySwipeSens;
+			var difX = (self.difTouchX - self.lastTouchMoveX)/ self.xSwipeSens;
+		}
+
+		var mouseX = self.lastTouchMoveX;
+		var mouseY = self.lastTouchMoveY;
+		var leftDistance = self.getLeftDistance();
+		var topDistance = self.getTopDistance();
+		var currentID = '#hItem' + self.currentHIndex;
+
+		if (self.currentHIndex == clickedIndex && self.isVideo(clickedIndex)) {
+			return;
+		}
+
+		if (self.interruptGoTo == true) {
+			self.interruptGoTo = false;
+			return
+		}
+
+		if( Math.abs(difX) >= 1 || Math.abs(difX) >= 1) {
+			if ($(currentID).find('video').length > 0 && mouseX == 0) return
+			if( difX <= -1) {
+				self.slidePrev(1);
+				self.hideBackButton();
+				return;
+			}
+			if( difX >= 1) {
+				self.slideNext(1);
+				self.hideBackButton();
+				return;
+			}
+			if( difY <= -1) {
+				self.slideNext(1);
+				self.hideBackButton();
+				return;
+			}
+			if( difY >= 1) {
+				self.slidePrev(1);
+				self.hideBackButton();
+				return;
+			}
+		}
+		else {
+			//check if prev or next slide is clicked
+			//if (Math.abs(difX) == 0 && Math.abs(difY) == 0 && clickedIndex != self.currentHIndex) {
+
+			if (Math.abs(difX) == 0 && Math.abs(difY) == 0 && (mouseX < leftDistance || mouseX > leftDistance + self.getSlideWidth()) )     {
+				if (mouseX > 0) {
+					self.goToSlide(clickedIndex);
+					self.hideBackButton();
+				}
+				return;
+			}
+
+			if (self.isVideo(clickedIndex)) return;
+
+			//if click on center
+			if (Math.abs(difX) == 0 && Math.abs(difY) == 0 && clickedIndex == self.currentHIndex) {
+				if (self.isVideo(clickedIndex)) {
+					return;
 				}
 
-				if(!Modernizr.touch) {
+				if ($('#hover-slide').css('display') != 'none')
+					self.close();
+				else
+					self.showBackButton();
+				return;
+			}
+		}
 
-								self.slider.on('mousedown', function(ev){
-												mouseDownEvent(ev, ev.clientX, ev.clientY, self);
-								})
-
-								self.slider.on('mousemove', function(ev){
-												clearInterval(self.autoScrollInterval);
-												mouseMoveEvent(ev, ev.clientX, ev.clientY, self);
-								})
-
-								self.slider.on('mouseup', function(ev){
-												mouseUpEvent(ev);
-								})
-				} else {
-								$('#hover-prev, #hover-next').css( "display", "none");
-								self.slider.on('touchstart', function(ev){
-												if( ev.originalEvent.touches.length == 1)
-																mouseDownEvent(ev, ev.originalEvent.targetTouches[0].pageX, ev.originalEvent.targetTouches[0].pageY, self);
-								})
-
-								self.slider.on('touchmove', function(ev){
-												if( ev.originalEvent.touches.length == 1)
-																mouseMoveEvent(ev, ev.originalEvent.targetTouches[0].pageX, ev.originalEvent.targetTouches[0].pageY, self);
-								})
-
-								self.slider.on('touchend', function(ev){
-												mouseUpEvent(ev);
-								})
-				}
-
-				var clickedIndex = -1;
-
-				function mouseDownEvent(ev, x, y, self) {
-
-								clickedIndex =  convertID($(ev.target).closest('li').attr('id'));
-								if (self.isVideo(clickedIndex)) return;
-								self.slider.addClass('clicked');
-								self.slider.removeClass('dragable');
-								self.lastTouchMoveX = self.startTouchX = x;
-								self.lastTouchMoveY = self.startTouchY = y;
-								self.difTouchX = self.startTouchX;
-								self.difTouchY = self.startTouchY;
-
-								//if slider is clicked while goToSlide animation
-								if (self.jumpDistance > 1) {
-
-												var distanceLeft = self.getDistanceLeft(clickedIndex);
-												var distanceRight = self.getDistanceRight(clickedIndex);
-												self.interruptGoTo = true;
-												self.jumpDistance = 0;
-
-												if (distanceLeft < distanceRight) {
-																for (var i=0; i<distanceLeft; i++) {
-																				self.moveLastLeft();
-																}
-												}
-												else {
-																for (var i=0; i<distanceRight; i++) {
-																				self.moveFirstRight();
-																}
-												}
-
-												self.slider.stop();
-												self.currentHIndex = clickedIndex;
-												self.setCurrentIndex(clickedIndex);
-												ev.preventDefault();
-												self.centerSlider();
-												return
-								}
-
-								if(self.isSliding) ev.preventDefault();
-								self.slider.stop(false,true).css({'left' : self.slider.css('left')})
-
-				}
-
-				function mouseMoveEvent(ev, x, y, self) {
-
-								ev.preventDefault();
-								if(!self.slider.hasClass('clicked')) return;
-
-								self.slider.addClass('dragable');
-								self.difTouchX = self.lastTouchMoveX;
-								self.difTouchY = self.lastTouchMoveY;
-								curX = x;
-								curY = y;
-
-								var sliderLeft = curX - self.lastTouchMoveX;
-								self.slider.stop(false,true).css({'left' : '+='+sliderLeft});
-								var currentLeft  = self.getCurrentLeft();
-								var leftPosition = self.getLeftPosition();
-								var difference  = leftPosition - currentLeft;
-
-								if(difference > 0 && difference > slideWidth /2 ) {
-												self.moveFirstRight();
-												self.hideBackButton();
-												self.setCurrentIndex(self.currentHIndex+1);
-								} else if (difference < 0 && Math.abs(difference) > slideWidth/2) {
-												self.moveLastLeft();
-												self.hideBackButton();
-												self.setCurrentIndex(self.currentHIndex-1);
-								}
-								self.lastTouchMoveX = curX;
-								self.lastTouchMoveY = curY;
-				}
-
-				self.lastIndex = self.currentHIndex;
-
-
-				function mouseUpEvent(ev){
-
-					ev.stopPropagation();
-					self.slider.removeClass('clicked');
-					self.slider.removeClass('dragable');
-
-					if(clientDevice == 'mobile') {
-						var difY = (self.difTouchY - self.lastTouchMoveY)/ 15;
-						var difX = (self.difTouchX - self.lastTouchMoveX)/ 15;
-					} else {
-						var difY = (self.difTouchY - self.lastTouchMoveY)/ self.ySwipeSens;
-						var difX = (self.difTouchX - self.lastTouchMoveX)/ self.xSwipeSens;
-					}
-
-					var mouseX = self.lastTouchMoveX;
-					var mouseY = self.lastTouchMoveY;
-					var leftDistance = self.getLeftDistance();
-					var topDistance = self.getTopDistance();
-					var currentID = '#hItem' + self.currentHIndex;
-
-					if (self.currentHIndex == clickedIndex && self.isVideo(clickedIndex)) {
-						return;
-					}
-
-					if (self.interruptGoTo == true) {
-						self.interruptGoTo = false;
-						return
-					}
-
-					if( Math.abs(difX) >= 1 || Math.abs(difX) >= 1) {
-						if ($(currentID).find('video').length > 0 && mouseX == 0) return
-						if( difX <= -1) {
-										self.slidePrev(1);
-										self.hideBackButton();
-										return;
-						}
-						if( difX >= 1) {
-										self.slideNext(1);
-										self.hideBackButton();
-										return;
-						}
-						if( difY <= -1) {
-										self.slideNext(1);
-										self.hideBackButton();
-										return;
-						}
-						if( difY >= 1) {
-										self.slidePrev(1);
-										self.hideBackButton();
-										return;
-						}
-					}
-					else {
-						//check if prev or next slide is clicked
-						//if (Math.abs(difX) == 0 && Math.abs(difY) == 0 && clickedIndex != self.currentHIndex) {
-
-						if (Math.abs(difX) == 0 && Math.abs(difY) == 0 && (mouseX < leftDistance || mouseX > leftDistance + self.getSlideWidth()) )     {
-								if (mouseX > 0) {
-									self.goToSlide(clickedIndex);
-									self.hideBackButton();
-								}
-								return;
-						}
-
-						if (self.isVideo(clickedIndex)) return;
-
-						//if click on center
-						if (Math.abs(difX) == 0 && Math.abs(difY) == 0 && clickedIndex == self.currentHIndex) {
-
-							if (self.isVideo(clickedIndex)) {
-											return;
-							}
-
-							if ($('#hover-slide').css('display') != 'none')
-											self.close();
-							else
-											self.showBackButton();
-							return;
-						}
-					}
-
-
-
-					if (Math.abs(difX) > 0 && Math.abs(difX) < 1) {
-									self.centerSlider();
-									return;
-					}
+		if (Math.abs(difX) > 0 && Math.abs(difX) < 1) {
+			self.centerSlider();
+			return;
+		}
 	}
 }
 
@@ -1077,25 +1065,18 @@ HorizontalSlider.prototype.startAutoScroll = function (direction) {
 }
 
 HorizontalSlider.prototype.stopAutoScroll = function (direction) {
+	var self = this;
+	clearInterval(self.autoScrollInterval);
+	self.isSliding = false;
 
-				var self = this;
-				// setTimeout(
-				// 				function(){
-												clearInterval(self.autoScrollInterval);
-												self.isSliding = false;
-
-												var difference = Math.abs(self.getLeftPosition() - self.getCurrentLeft());
-
-												if (difference > 100  && difference < self.getSlideWidth() + 100) {
-																if (direction == 'left') self.slidePrev(1, 900, 'easeOutExpo');
-																if (direction == 'right') self.slideNext(1, 900, 'easeOutExpo');
-												}
-												else {
-																self.centerSlider();
-												}
-								// }
-				// , 0);
-
+	var difference = Math.abs(self.getLeftPosition() - self.getCurrentLeft());
+	if (difference > 100  && difference < self.getSlideWidth() + 100) {
+		if (direction == 'left') self.slidePrev(1, 900, 'easeOutExpo');
+		if (direction == 'right') self.slideNext(1, 900, 'easeOutExpo');
+	}
+	else {
+		self.centerSlider();
+	}
 }
 
 HorizontalSlider.prototype.alignImages = function() {
