@@ -50,6 +50,7 @@ function initApplication() {
 	window.mousewheelevent = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"
 	window.orientation = Math.floor(deviceWidth/ deviceHeight);
 	window.settings = json_settings || null;
+	window.options = json_options || null;
 	window.MobileMenu = $('#mobile-menu');
 	window.MobileMenu_ul = MobileMenu.find('ul');
 	window.MobileMenu_li = MobileMenu.find('li');
@@ -92,6 +93,7 @@ function mobile_init(){
 function menu_reposition() {
 	$('#left-column').animate({'opacity':1}, 100,'easeOutExpo');
 	$('#logo').css('padding-top', ( hSlider.getTopDistance() - $('#logo').height() )/2 );
+	$('#logo').css('color', options.primary_text_color);
 	$('#move-menu').css('top', hSlider.getTopDistance() + vSlider.getTitleHeight())
 
 	var w = Math.min(Math.floor(deviceWidth*0.49), 699);

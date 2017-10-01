@@ -19,7 +19,7 @@
 		<!--<script src="http://vjs.zencdn.net/c/video.js"></script>-->
 		<script src="http://api.html5media.info/1.1.5/html5media.min.js"></script>
 	</head>
-	 <body style="background: #fff url('../img/<?php echo $options['background_image'] ?>');"> 
+	 <body style="background: #fff url('../img/<?php echo $options['background_image'] ?>');">
 	<!-- <body>
 
 	-->		<h1 id="mobile-logo">AHOY</h1>
@@ -62,7 +62,7 @@
 
 					<ul id="menu">
 						<?php foreach($categories as $category): ?>
-							<li>
+							<li style="color: <?php echo $options['primary_text_color'] ?>;">
 
 								<!-- category button -->
 								<?php if ($category['Category']['type'] == 'projects'): ?>
@@ -98,7 +98,7 @@
 				</div>
 
 				<div id="social">
-					<a id="email-address" href="mailto:<?php echo $options['email_address'] ?>"><?php echo $options['email_address'] ?></a>
+					<a id="email-address" href="mailto:<?php echo $options['email_address'] ?>" style="color: <?php echo $options['primary_text_color'] ?>;"><?php echo $options['email_address'] ?></a>
 					<a href="<?php echo $options['facebook_link'] ?>" target="_blank"><?php echo $this->Html->image('facebook_icon.png', array('width' => 20, 'height' => 20, 'alt' => 'facebook')) ?></a>
 				</div>
 			</div>
@@ -108,7 +108,7 @@
 		</div>
 
 		<script type="text/javascript">
-
+			var json_options = <?php echo htmlspecialchars_decode($json_options); ?>;
 			var json_settings = <?php echo htmlspecialchars_decode($json_settings); ?>;
 			var cakeRoot = '<?php echo Router::url('/', true); ?>';
 		</script>

@@ -2,7 +2,7 @@
 
 
 class AppController extends Controller {
-  
+
   	public $components = array(
 	    'Auth' => array(
 	        'loginAction' => array(
@@ -12,7 +12,7 @@ class AppController extends Controller {
 	        ),
 	        'authError' => 'Please login!',
 	        'authenticate' => array(
-	            'Form' 
+	            'Form'
 	        ),
 	        'loginRedirect' => array('controller' => 'categories', 'action' => 'index', 'admin' => true),
             'logoutRedirect' => array('controller' => 'users', 'action' => 'login'),
@@ -49,11 +49,11 @@ class AppController extends Controller {
 		$is_iPhone = 0;
         $is_iPad = 0;
         if (preg_match('/iphone/i', $user_agent)) {
-         	$is_iPhone = 1;  
+         	$is_iPhone = 1;
         }
         else{
          	if (preg_match('/ipad/i', $user_agent)) {
-	        	$is_iPad = 1;  
+	        	$is_iPad = 1;
 	        }
         }
         $this->set(compact('is_iPad'));
@@ -74,7 +74,7 @@ class AppController extends Controller {
 	}catch(Exception $e){var_dump($e);die;}
 		$this->set('options', $options);
 
-		
+
 
 
 		$this->LoadModel('Setting');
@@ -90,7 +90,7 @@ class AppController extends Controller {
 
 		$this->set('json_settings', json_encode($settings));
 
-	
+
 
 		$this->loadModel('Category');
 		$this->set('admin_categories', $this->Category->getAllCategories());
@@ -108,9 +108,9 @@ class AppController extends Controller {
 
         $this->loadModel('Project');
         $this->loadModel('CategoryProject');
-	   
+
 	    /*
-        $catProjects = $this->Project->CategoryProject->Category->find('list', 
+        $catProjects = $this->Project->CategoryProject->Category->find('list',
                 array(
                     //'fields' => array('Category.id', 'Category.name_en'),
                     'order' => array('rank', 'id'),
@@ -122,9 +122,9 @@ class AppController extends Controller {
 		$catProjects = array();
 		foreach ($categories as $c) {
 			$ci = $c['Category']['id'];
-			$catProjects[$ci] = $this->Project->CategoryProject->find('all', 
-	            array( 
-	                'order' => array('CategoryProject.rank', 'CategoryProject.id'), 
+			$catProjects[$ci] = $this->Project->CategoryProject->find('all',
+	            array(
+	                'order' => array('CategoryProject.rank', 'CategoryProject.id'),
 	                'recursive' => 0,
 	                'conditions' => array(
 	                    'CategoryProject.category_id' => $ci,
@@ -133,7 +133,7 @@ class AppController extends Controller {
 	                'fields' => array('Project.id', 'Project.name_en', 'Project.slug')
 	            ));
 		}
-    
+
 
         $this->set(compact('categories'));
         $this->set(compact('catProjects'));
