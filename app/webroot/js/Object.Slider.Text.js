@@ -76,7 +76,7 @@ TextSlider.prototype.hidePagination = function() {
 
 TextSlider.prototype.alignPagination = function() {
 	var self = this;
-	$('.text-prev span').show().css({'top': vSlider.getTopDistance()}); 
+	$('.text-prev span').show().css({'top': vSlider.getTopDistance()});
 	$('.text-next span').show().css({'bottom': vSlider.getTopDistance()});
 	$('.text-pagination').show().css({'top': (deviceHeight - self.getPaginationHeight()) / 2 });
 	//if (clientDevice == 'ipad') self.hidePagination();
@@ -120,7 +120,7 @@ TextSlider.prototype.open = function(){
 	loader.hide();
 
 	$('#text-next,#text-prev').fadeIn(self.openTime);
-	
+
 	if(clientDevice == 'mobile') {
 		$(self.tElements).each(function(){
 			$('[style*=x-large]',this).css('font-size','medium');
@@ -181,7 +181,7 @@ TextSlider.prototype.setData = function(json_data, url){
 		var div_el = $('<div>');
 
 		for(var j = 0; j < tab.Content.length; j++){
-			var content = tab.Content[j];   
+			var content = tab.Content[j];
 			if(content.type == 'image'){
 				console.log(content);
 				var e_img = $('<img>').attr('src', getFullImagePath(content.image));
@@ -192,6 +192,7 @@ TextSlider.prototype.setData = function(json_data, url){
 
 			if(content.type == 'text'){
 				div_el.append($('<div>').addClass('text').addClass('clearfix').append($('<div>').addClass('en').html(content.text_en)).append($('<div>').addClass('de').html(content.text_de)));
+				$('.text > .de').css('color', options.primary_text_color);
 			}
 		}
 
@@ -242,9 +243,9 @@ TextSlider.prototype.initEvents = function(){
 	if( clientDevice == 'desktop' ) {
 		self.tContainer.on('mouseenter','.text-next', function(){
 		var el_height = self.tElements.first().children('h3').outerHeight(true);
-								
+
 		self.t2 = setTimeout(function(){
-			self.t = setInterval(function(){        
+			self.t = setInterval(function(){
 				var top = parseInt(self.slider.css('top'), 10);
 				top = top - self.hoverSpeed;
 					if (top < 0) {
@@ -344,13 +345,13 @@ TextSlider.prototype.initEvents = function(){
 			curY = y;
 
 			var vsliderTop = curY - self.lastTouchMoveY;
-			
+
 			var slider_height = self.slider.height();
 
 			if(slider_height > deviceHeight+20){
 
 							var top = parseInt(self.slider.css('top'), 10);
-							
+
 							if(top + vsliderTop < 10 && vsliderTop > 0){
 															self.slider.stop(true,false).css({'top' : top + vsliderTop})
 							}
@@ -369,9 +370,9 @@ TextSlider.prototype.initEvents = function(){
 function pointEnd(ev){
 				var difY = (self.difTouchY - self.lastTouchMoveY)/ 30;
 				var difX = (self.difTouchX - self.lastTouchMoveX)/ 50;
-				
+
 				if( Math.abs(difY) >= 1){
-								
+
 								if( difY <= -1){
 												difY = Math.floor(difY);
 								}
@@ -391,7 +392,7 @@ function pointEnd(ev){
 												}
 								}
 								else{
-												setTimeout(function(){  
+												setTimeout(function(){
 																for(i=0;i< Math.abs(difY);i++){
 																				if(sing > 0){
 																								self.moveUp(Math.abs(difY))
@@ -399,12 +400,12 @@ function pointEnd(ev){
 																				else{
 																								self.moveDown(Math.abs(difY));
 																				}
-																				
+
 																}
 												},0)
 
 								}
-												
+
 				}
 				else{
 
@@ -412,7 +413,7 @@ function pointEnd(ev){
 												// NOT TAP EVENT
 												ev.preventDefault();
 								}
-								/*      
+								/*
 								if(Math.abs(difX) > 1 && Math.abs(difY) < 2){
 												if(difX > 1) {
 																changeCategory(+1);
@@ -450,7 +451,7 @@ tSlider.tContainer.mousewheel(function(event, delta, deltaX, deltaY) {
 		if( deltaY > 0 ){
 					tSlider.moveDown(deltaY);
 		}
-	
+
 	if( deltaX <= -1 ){
 				clearTimeout($.data(this, 'timer'));
 								$.data(this, 'timer', setTimeout(function() {
@@ -463,24 +464,24 @@ tSlider.tContainer.mousewheel(function(event, delta, deltaX, deltaY) {
 							changeCategory(-1);
 								}, 200));
 	}
-	
+
 
 });
 
 
 
-tSlider.tContainer.touchwipe({ 
-				wipeRight:      function() {  
-				
+tSlider.tContainer.touchwipe({
+				wipeRight:      function() {
+
 								changeCategory(-1);
-				
+
 				},
-				wipeLeft:       function() {  
-				
+				wipeLeft:       function() {
+
 								changeCategory(+1);
-				
+
 				},
-				
+
 				min_move_x: 20,
 				min_move_y: 20,
 				preventDefaultEvents: true
@@ -529,10 +530,11 @@ TextSlider.prototype.showTSliderAtIndex = function(slideIndex){
 
 								self.currentTIndex = slideIndex;
 								clearInterval(self.t);
-								
+
 								if(self.tElements.eq(slideIndex).hasClass('active')){
 
 												self.tElements.removeClass('active');
+												self.tElements.children('h3').children('span').css({'color': '#231F20', 'border-bottom': 'none'});
 												self.animating = true;
 												self.tElements.eq(slideIndex).children('div').slideUp(self.slideTime ,self.slideEasing, function(){
 
@@ -548,9 +550,15 @@ TextSlider.prototype.showTSliderAtIndex = function(slideIndex){
 												if(self.tElements.filter('.active').length > 0){
 																self.tElements.children('div').slideUp(self.slideTime ,self.slideEasing);
 																self.tElements.removeClass('active');
+																self.tElements.children('h3').children('span').css({'color': '#231F20', 'border-bottom': 'none'});
 												}
 
 												self.tElements.eq(slideIndex).addClass('active');
+												// if (that.parent('li').hasClass('active')) {
+												self.tElements.eq(slideIndex).children('h3').children('span').css({'color': options.primary_text_color, 'border-bottom': '2px solid '+options.primary_text_color});
+												// } else {
+												// 	that.children('span').css({'color': '#231F20', 'border-bottom': 'none'});
+												// }
 												self.animating = true;
 												self.tElements.eq(slideIndex).children('div').slideDown(self.slideTime ,self.slideEasing);
 												self.slider.animate({'top': 0}, 300);
@@ -609,7 +617,7 @@ TextSlider.prototype.moveUp = function(deltaY){
 
 TextSlider.prototype.moveDown = function(deltaY){
 
-				var self = this;        
+				var self = this;
 
 				var slider_height = self.slider.height();
 				var top = parseInt(self.slider.css('top'), 10);
@@ -634,20 +642,20 @@ TextSlider.prototype.moveDown = function(deltaY){
 								if( top > 10){
 												top = 10;
 								}
-												
+
 								if(window.isMagicMouse) {
 												self.slider.css({'top' : top});
 								} else {
 												self.slider.stop(true,false).animate({'top' : top}, self.swipeTime, self.swipeEasing);
 								}
-				}               
+				}
 }
 
 TextSlider.prototype.resizeSlider = function(first_time) {
 		var self = this;
 		var w = Math.min(Math.floor(deviceWidth*0.49), 699);
 		var h = Math.floor(w*0.67);
-		
+
 		if (deviceWidth > 765) {
 				$('#text-container').width(w);
 				$('#text-slider').width(w);
@@ -671,4 +679,11 @@ TextSlider.prototype.resizeText = function() {
 		$('#text-slider li h3').css({'font-size': 58*ratio+'px', 'line-height': 58*ratio+'px'});
 		$('#text-slider li .en').css({'font-size': 17*ratio+'px', 'line-height': 24*ratio+'px'});
 		$('#text-slider li .de').css({'font-size': 17*ratio+'px', 'line-height': 24*ratio+'px'});
+
+		$('#text-slider li h3').hover(function(){
+			$(this).css('color', options.primary_text_color);
+		}, function(){
+				$(this).css('color','#231F20');
+			}
+		);
 }
