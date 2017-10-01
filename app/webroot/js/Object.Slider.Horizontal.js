@@ -625,7 +625,7 @@ HorizontalSlider.prototype.addTextSlide = function(index, position) {
 				content.find('.en').append(data.text_de);
 				content.find('.de').append('<h3>'+data.title_en+'</h3>');
 				content.find('.de').append(data.text_en);
-
+				content.find('.de').css('color', options.primary_text_color);
 
 				li_elem.append(content);
 				if (position == 'before')
