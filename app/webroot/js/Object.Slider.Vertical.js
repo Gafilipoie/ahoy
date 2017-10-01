@@ -701,6 +701,7 @@ VerticalSlider.prototype.addCoverSlide = function() {
 
 	var data = this.jsonData;
 	var cover = $('<li id="vItem0"><div><div class="text"><div></div></div></div></li>');
+	cover.find('.text').css('background-color', options.primary_text_color);
 	var content = '';
 
 	if (!data.Category) data.Category = {name_en: 'No content'}
