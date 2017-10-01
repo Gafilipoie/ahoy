@@ -682,7 +682,7 @@ VerticalSlider.prototype.addEmptySlide = function(index, position) {
 	var li_elem = $('<li id="vItem'+(index+1)+'"></li>');
 	var aimg_elem = $('<a href="'+href+'"></a>');
 	var h5_elem = $('<h5><span>'+self.jsonData.Project[index].Project.name_en+' / </span>'+self.jsonData.Project[index].Project.name_de+'</h5>');
-
+	h5_elem.children('span').css('color', options.primary_text_color);
 	// Social Media Share Buttons
 	var socialButtons = $('<div class="social-media" style="position:absolute;bottom:0px;right:0px;opacity:0;width:auto;height:auto;"></div>');
 	var fbButton = $('<div class="fb-share" style="display:inline-block;">Facebook</div>');
@@ -739,6 +739,7 @@ VerticalSlider.prototype.addVideoSlide = function(index, position) {
 	// var href  = appURL + "/slides/view/" + category;
 	// var aimg_elem = $('<a href="'+href+'" style="position:absolute;top:-26px;left:0px;padding-top:26px;opacity:0;box-sizing:border-box;"></a>');
 	var h5_elem = $('<h5><span>'+self.jsonData.Project[index].Project.name_en+' / </span>'+self.jsonData.Project[index].Project.name_de+'</h5>');
+	h5_elem.children('span').css('color', options.primary_text_color);
 	// class="video-js vjs-default-skin vjs-big-play-centered"
 	var video_tag = $('<video id="videoElem'+(index+1)+'" preload="auto" data-setup="{}"><source src="'+appURL+'img/uploads/videos/'+data.mp4+'" type="video/mp4" /></video>');
 	var li_elem = $('<li id="vItem'+(index+1)+'"></li>');
