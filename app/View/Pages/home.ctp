@@ -50,7 +50,7 @@ if($isRobot) {
 }
 ?>
 <div id="text-container">
-	<div id="text-lhover">
+	<!-- <div id="text-lhover">
 		<div class="text-prev"><span></span></div>
 		<div class="text-next"><span></span></div>
 		<ul class="text-pagination"></ul>
@@ -59,7 +59,7 @@ if($isRobot) {
 		<div class="text-prev"><span></span></div>
 		<div class="text-next"><span></span></div>
 		<ul class="text-pagination"></ul>
-	</div>
+	</div> -->
 	<ul id="text-slider"></ul>
 </div>
 
