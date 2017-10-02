@@ -62,7 +62,7 @@
 
 					<ul id="menu">
 						<?php foreach($categories as $category): ?>
-							<li>
+							<li style="color: <?php echo $options['primary_text_color'] ?>;">
 
 								<!-- category button -->
 								<?php if ($category['Category']['type'] == 'projects'): ?>
