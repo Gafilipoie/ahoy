@@ -98,7 +98,7 @@
 				</div>
 
 				<div id="social">
-					<a id="email-address" href="mailto:<?php echo $options['email_address'] ?>" style="color: <?php echo $options['primary_text_color'] ?>;"><?php echo $options['email_address'] ?></a>
+					<a id="email-address" href="mailto:<?php echo $options['email_address'] ?>" style="color: <?php echo $options['primary_text_color'] ?>; border-bottom: 1px solid <?php echo $options['primary_text_color'] ?>;"><?php echo $options['email_address'] ?></a>
 					<a href="<?php echo $options['facebook_link'] ?>" target="_blank"><?php echo $this->Html->image('facebook_icon.png', array('width' => 20, 'height' => 20, 'alt' => 'facebook')) ?></a>
 				</div>
 			</div>
