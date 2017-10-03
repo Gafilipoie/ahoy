@@ -58,7 +58,12 @@
 
 		<div id="container">
 			<div id="left-column">
-				<?php echo $this->Html->link('AHOY', '/', array('id' => 'logo', 'title' => 'AHOY') ) ?>
+				<!-- <?php echo $this->Html->link('AHOY', '/', array('id' => 'logo', 'title' => 'AHOY') ) ?> -->
+				<?php echo $this->Html->link(
+				    $this->Html->image('AHOYlogo.png', ['alt' => '']),
+				    '/',
+				    ['escape' => false, 'id' => 'logo', 'title' => 'AHOY']
+				); ?>
 				<div id="move-menu">
 
 					<ul id="menu">

@@ -5,7 +5,7 @@ div {
 }
 
 /* Temporary */
-a[href="http://www.facebook.com"] { display: none; } 
+a[href="http://www.facebook.com"] { display: none; }
 
 a {
 	color:inherit;
@@ -34,7 +34,7 @@ html, body{
 	-khtml-user-select: none !important;
 	-moz-user-select: none !important;
 	-ms-user-select: none !important;
-	user-select: none !important; 
+	user-select: none !important;
 }
 
 body{
@@ -73,7 +73,7 @@ body{
 }
 
 a{
-	-webkit-tap-highlight-color: rgba(0,0,0,0); 
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 #left-column {
@@ -105,6 +105,9 @@ a{
 	line-height: 100%;
 	position: relative;
 	display: inline-block;
+}
+#logo img {
+	width: 191px;
 }
 
 #logo:hover{
@@ -179,14 +182,14 @@ a{
 	width: 100%;
 	z-index: 2000;
 	background-color: #28a7f0;
-	background-color: rgba(40, 167, 240, 0.7); 
+	background-color: rgba(40, 167, 240, 0.7);
 	-webkit-box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.7);
 	box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.7);
 
 }
 
 #mobile-logo.open{
-	background-color: rgba(40, 167, 240, 0.8); 
+	background-color: rgba(40, 167, 240, 0.8);
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
@@ -194,7 +197,7 @@ a{
 #mobile-menu {
 	display: none;
 	background-color: #28a7f0;
-	background-color: rgba(40, 167, 240, 0.8); 
+	background-color: rgba(40, 167, 240, 0.8);
 	position: absolute;
 	top: 0;
 	bottom: 36px;
@@ -258,12 +261,15 @@ a{
 
 
 
-@media (max-width: 1024px) { 
+@media (max-width: 1024px) {
 	body{
 		font-size: 90%;
 	}
 	#logo{
 		font-size: 50px;
+	}
+	#logo img {
+		width: 156px;
 	}
 }
 
@@ -274,6 +280,9 @@ a{
 	}
 	#logo{
 		font-size: 42px;
+	}
+	#logo img {
+		width: 133px;
 	}
 }
 
@@ -291,12 +300,12 @@ a{
 		cursor: pointer;
 	}
 	#hover-slide h3{
-		font-size: 20px !important; 
+		font-size: 20px !important;
 	}
 	#left-column{
 		display: none;
 	}
-	#vertical-lhover, 
+	#vertical-lhover,
 	#vertical-rhover,
 	#horizontal-thover,
 	#horizontal-bhover,
