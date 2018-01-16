@@ -75,8 +75,8 @@ if($isRobot) {
 		<div class="vertical-next"><span></span></div>
 		<ul class="vertical-pagination"></ul>
 	</div>
-	<div id="v-hover-prev"></div>
-	<div id="v-hover-next"></div>
+	<!-- <div id="v-hover-prev"></div> -->
+	<!-- <div id="v-hover-next"></div> -->
 	<div id="vertical-slider">
 		<ul>
 			<li>

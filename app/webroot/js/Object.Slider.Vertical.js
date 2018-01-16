@@ -263,7 +263,7 @@ VerticalSlider.prototype.initEvents = function(){
 		});
 		// Added new - This is the working version
 
-		$('.vertical-pagination li').on('click', function(ev){ev.stopImmediatePropagation(); self.goToSlide($(this).index());});
+		// $('.vertical-pagination li').on('click', function(ev){ev.stopImmediatePropagation(); self.goToSlide($(this).index());});
 
 		// $('.vertical-prev span').on('mouseenter', function(ev){
 		// 	if (!self.navBarClicked)
@@ -417,14 +417,21 @@ VerticalSlider.prototype.initEvents = function(){
 		else {
 			//check if prev or next slide is clicked
 			//if (Math.abs(difX) == 0 && Math.abs(difY) == 0 && clickedIndex != self.currentVIndex) {
-			if (Math.abs(difX) == 0 && Math.abs(difY) == 0 && (mouseY < topDistance || mouseY > deviceHeight - topDistance) )	{
-				if (hSlider.isOpen)  { hSlider.close(); return; }
-				self.goToSlide(clickedIndex);
-				return;
-			}
+
+			/******* I REMOVED THIS ON CONNIE'S WISH *******/
+			// if (Math.abs(difX) == 0 && Math.abs(difY) == 0 && (mouseY < topDistance || mouseY > deviceHeight - topDistance) )	{
+			// 	if (hSlider.isOpen)  { hSlider.close(); return; }
+			// 	self.goToSlide(clickedIndex);
+			// 	return;
+			// }
+			/******* I REMOVED THIS ON CONNIE'S WISH *******/
+
 			if (hSlider.isOpen) return;
 			//if click on center
-			if (Math.abs(difX) == 0 && Math.abs(difY) == 0 && clickedIndex == self.currentVIndex) {
+
+			/******* I REMOVED THIS ON CONNIE'S WISH *******/
+			// if (Math.abs(difX) == 0 && Math.abs(difY) == 0 && clickedIndex == self.currentVIndex) {
+			/******* I REMOVED THIS ON CONNIE'S WISH *******/
 
 				var slide = self.slider.find('li:hover');
 				var id = convertID(slide.attr('id'));
@@ -447,12 +454,17 @@ VerticalSlider.prototype.initEvents = function(){
 					}
 				}
 				return;
-			}
+			/******* I REMOVED THIS ON CONNIE'S WISH *******/
+			// }
+			/******* I REMOVED THIS ON CONNIE'S WISH *******/
 
-			if (Math.abs(difY) > 0 && Math.abs(difY) < 1) {
-				self.centerSlider();
-				return;
-			}
+			/******* I REMOVED THIS ON CONNIE'S WISH *******/
+			// if (Math.abs(difY) > 0 && Math.abs(difY) < 1) {
+			// 	self.centerSlider();
+			// 	return;
+			// }
+			/******* I REMOVED THIS ON CONNIE'S WISH *******/
+
 			/*if (difY > 0 && difY < 1) {
 				if (Math.abs(self.startTouchY - self.lastTouchMoveY) < 200) {
 					self.slideNext(1);
