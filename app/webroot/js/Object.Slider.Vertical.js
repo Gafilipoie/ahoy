@@ -80,7 +80,7 @@ VerticalSlider.prototype.getSlideCount = function() {
 
 VerticalSlider.prototype.getTopPosition = function() {
 	var self = this;
-	var halfslides = parseInt(self.getSlideCount()/2) - 1
+	var halfslides = parseInt(self.getSlideCount()/2) - 1;
 	var slideHeight =  self.getSlideHeight();
 	var h5_height = self.getTitleHeight();
 	var halfDiff = (deviceHeight - slideHeight) / 2;
@@ -516,7 +516,6 @@ VerticalSlider.prototype.startAutoScroll = function (direction) {
 
 	clearInterval(self.autoScrollInterval);
 	self.autoScrollInterval = setInterval(function(){
-
 		if (self.navBarClicked) {
 			self.stopAutoScroll();
 			return 0;
@@ -544,9 +543,8 @@ VerticalSlider.prototype.startAutoScroll = function (direction) {
 
 		var newTop = currentTop + self.mouseSens * direction * 1.5;
 		self.isSliding = true;
-		self.slider.animate({'top': newTop}, 250, 'linear', callback);
-
-	}, 250)
+		self.slider.animate({'top': newTop}, 500, 'linear', callback);
+	}, 500)
 }
 
 VerticalSlider.prototype.stopAutoScroll = function (direction) {
@@ -554,20 +552,18 @@ VerticalSlider.prototype.stopAutoScroll = function (direction) {
 	clearInterval(self.autoScrollInterval);
 	self.isSliding = false;
 
-	var difference = Math.abs(self.getTopPosition() - self.getCurrentTop());
-	if (difference >100 && difference < self.getSlideHeight() + 100) {
-		if (direction == 'up') self.slideNext(1, 900, 'easeOutExpo');
-		if (direction == 'down') self.slidePrev(1, 900, 'easeOutExpo');
-	}
-	else {
-		self.centerSlider();
-	}
+	// var difference = Math.abs(self.getTopPosition() - self.getCurrentTop());
+	// if (difference >100 && difference < self.getSlideHeight() + 100) {
+		// if (direction == 'up') self.slideNext(1, 900, 'easeOutExpo');
+		// if (direction == 'down') self.slidePrev(1, 900, 'easeOutExpo');
+	// }
+	// else {
+	// 	self.centerSlider();
+	// }
 
-	/*
 	setTimeout(function() {
-		if (self.isSliding == false) {
-					}
-	}, 300)*/
+		self.centerSlider();
+	}, 300);
 }
 
 VerticalSlider.prototype.open = function(category, goTo){
@@ -1007,24 +1003,26 @@ VerticalSlider.prototype.scrollDown = function(delta) {
 	var topPosition = self.getTopPosition();
 
 	var callback = function() {
-
 		var currentTop = parseInt(self.slider.css('top'));
 		var slideHeight = parseInt(self.vElements.find('li').first().outerHeight(true));
 		var difference = Math.abs(topPosition - currentTop);
 		if (difference > slideHeight) {
 			self.moveLastUp();
-			self.setCurrentIndex(self.currentVIndex-1);
+			self.setCurrentIndex(self.currentVIndex - 1);
 		}
 	};
 
-	if(!window.isMagicMouse) {
-		var newTop = currentTop + self.mouseSens * 1;
-		self.slider.animate({top: newTop}, 200, callback);
-	} else {
-		var newTop = currentTop + self.mouseSens * delta;
-		self.slider.css({top: newTop});
-		setTimeout(callback, 0);
-	}
+	// if(!window.isMagicMouse) {
+	// 	var newTop = currentTop + self.mouseSens * 1;
+	// 	self.slider.animate({top: newTop}, 200, callback);
+	// } else {
+	// 	var newTop = currentTop + self.mouseSens * delta;
+	// 	self.slider.css({top: newTop});
+	// 	setTimeout(callback, 0);
+	// }
+	var newTop = currentTop + self.mouseSens * 1;
+	self.slider.css({top: newTop});
+	setTimeout(callback, 0);
 }
 
 VerticalSlider.prototype.scrollUp = function(delta) {
@@ -1034,34 +1032,40 @@ VerticalSlider.prototype.scrollUp = function(delta) {
 	this.slider.stop(false, true);
 	var currentTop = parseInt(self.slider.css('top'));
 	var topPosition = self.getTopPosition();
+
 	var callback = function() {
 		var currentTop = parseInt(self.slider.css('top'));
 		var slideHeight = parseInt(self.vElements.find('li').first().outerHeight(true));
 		var difference = Math.abs(topPosition - currentTop);
 		if (difference > slideHeight) {
 			self.moveFirstDown();
-			self.setCurrentIndex(self.currentVIndex+1);
+			self.setCurrentIndex(self.currentVIndex + 1);
 		}
 	}
 
-	if(!window.isMagicMouse) {
-		var newTop = currentTop - self.mouseSens * 1;
-		self.slider.animate({top: newTop}, 200, callback);
-	} else {
-		var newTop = currentTop + self.mouseSens * delta;
-		self.slider.css({top: newTop});
-		setTimeout(callback, 0);
-	}
+	// if(!window.isMagicMouse) {
+	// 	var newTop = currentTop - self.mouseSens * 1;
+	// 	self.slider.animate({top: newTop}, 200, callback);
+	// } else {
+	// 	var newTop = currentTop + self.mouseSens * delta;
+	// 	self.slider.css({top: newTop});
+	// 	setTimeout(callback, 0);
+	// }
+	var newTop = currentTop - self.mouseSens * 1;
+	self.slider.css({top: newTop});
+	setTimeout(callback, 0);
 }
 
 VerticalSlider.prototype.scrollStop = function(direction) {
-	var difference = Math.abs(this.getTopPosition() - this.getCurrentTop());
-
-	if (difference > 90) {
-		if (direction == 'up') this.slideNext(1, 900, 'easeOutExpo');
-		if (direction == 'down') this.slidePrev(1, 900, 'easeOutExpo');
-	}
-	//this.centerSlider();
+	var self = this;
+	// var difference = Math.abs(this.getTopPosition() - this.getCurrentTop());
+	// if (difference > 90) {
+	// 	if (direction == 'up') this.slideNext(1, 900, 'easeOutExpo');
+	// 	if (direction == 'down') this.slidePrev(1, 900, 'easeOutExpo');
+	// }
+	setTimeout(function() {
+		self.centerSlider();
+	}, 300)
 }
 
 VerticalSlider.prototype.moveFirstDown = function() {

@@ -46,6 +46,25 @@ function HorizontalSlider() {
 }
 
 /*************** GET FUNCTIONS ****************/
+HorizontalSlider.prototype.resizeHorizontalHoverZones = function() {
+	var vSliderLeft = vSlider.vContainer.css('left');
+	var vSliderRight = vSlider.vContainer.css('right');
+	var vSliderMarginLeft = vSlider.vContainer.css('margin-left');
+	var vSliderMarginRight = vSlider.vContainer.css('margin-right');
+
+	if (vSliderMarginLeft == '0px') {
+		$('#h-hover-prev').css('width', vSliderLeft);
+	} else {
+		$('#h-hover-prev').css('width', vSliderMarginLeft);
+	}
+
+	if (vSliderMarginRight == '0px') {
+		$('#h-hover-next').css('width', vSliderRight);
+	} else {
+		$('#h-hover-next').css('width', vSliderMarginRight);
+	}
+}
+
 HorizontalSlider.prototype.getSlideWidth = function() {
 				try {
 								return parseInt(this.hElements.find('li').first().outerWidth(true));
@@ -90,12 +109,16 @@ HorizontalSlider.prototype.getSlideMargin = function() {
 }
 
 HorizontalSlider.prototype.getLeftPosition = function() {
-				var leftDistance =  this.getLeftDistance() + this.getSlideMargin();
-				var result =  0 - (parseInt(this.getSlideCount()/2) * this.getSlideWidth()) + leftDistance;
-				if (clientDevice == 'mobile')
-								return result - 2;
-				else
-								return result;
+	var self = this;
+	var halfslides = parseInt(self.getSlideCount()/2) - 1;
+	var slideWidth =  self.getSlideWidth();
+	var leftDistance =  this.getLeftDistance() + this.getSlideMargin();
+	var newLeft = 0 - halfslides * slideWidth + leftDistance;
+	if (clientDevice == 'mobile')
+		return newLeft - 2;
+	else
+		return newLeft;
+	return parseInt(newLeft);
 }
 
 HorizontalSlider.prototype.getCurrentLeft = function() {
@@ -950,118 +973,119 @@ HorizontalSlider.prototype.hideBackButton = function() {
 }
 
 HorizontalSlider.prototype.centerSlider = function() {
-				var newLeft = this.getLeftPosition();
-				this.slider.stop(false,true).animate({left: newLeft});
+	this.slider.stop(false,true).animate({left: this.getLeftPosition()});
 }
 
 HorizontalSlider.prototype.scrollPrev = function(delta) {
+	var self = this;
+	clearTimeout(self.timeoutEvent);
+	self.timeoutEvent = setTimeout(function(){self.scrollStop('right');}, 300);
+	this.slider.stop(false, true);
+	var currentLeft = self.getCurrentLeft();
+	var leftPosition = self.getLeftPosition();
 
-				var self = this;
-				clearTimeout(self.timeoutEvent);
-				self.timeoutEvent = setTimeout(function(){self.scrollStop('right');}, 300);
-				this.slider.stop(false, true);
-				var currentLeft = self.getCurrentLeft();
-				var leftPosition = self.getLeftPosition();
-				var callback = function() {
-								var currentLeft = self.getCurrentLeft()
-								var slideWidth = self.getSlideWidth();
-								var difference = Math.abs(leftPosition - currentLeft);
-								if (difference > slideWidth) {
-												self.moveLastLeft();
-												self.setCurrentIndex(self.currentHIndex-1);
-								}
-				}
+	var callback = function() {
+		var currentLeft = self.getCurrentLeft()
+		var slideWidth = self.getSlideWidth();
+		var difference = Math.abs(leftPosition - currentLeft);
+		if (difference > slideWidth) {
+			self.moveLastLeft();
+			self.setCurrentIndex(self.currentHIndex - 1);
+		}
+	}
 
-				if(!window.isMagicMouse) {
-								var newLeft = currentLeft + self.mouseSens;
-								self.slider.animate({left: newLeft}, 200, callback);
-				} else {
-								var newLeft = currentLeft + self.mouseSens * delta;
-								self.slider.css({left: newLeft});
-								setTimeout(callback, 0);
-				}
+	// if(!window.isMagicMouse) {
+	// 	var newLeft = currentLeft + self.mouseSens;
+	// 	self.slider.animate({left: newLeft}, 200, callback);
+	// } else {
+	// 	var newLeft = currentLeft + self.mouseSens * delta;
+	// 	self.slider.css({left: newLeft});
+	// 	setTimeout(callback, 0);
+	// }
+	var newLeft = currentLeft + self.mouseSens;
+	self.slider.css({left: newLeft});
+	setTimeout(callback, 0);
 }
 
 HorizontalSlider.prototype.scrollNext = function(delta) {
+	var self = this;
+	clearTimeout(self.timeoutEvent);
+	self.timeoutEvent = setTimeout(function(){self.scrollStop('left');}, 300);
+	this.slider.stop(false, true);
+	var currentLeft = self.getCurrentLeft();
+	var leftPosition = self.getLeftPosition();
 
-				var self = this;
-				clearTimeout(self.timeoutEvent);
-				self.timeoutEvent = setTimeout(function(){self.scrollStop('left');}, 300);
-				this.slider.stop(false, true);
-				var currentLeft = self.getCurrentLeft();
-				var leftPosition = self.getLeftPosition();
+	var callback = function() {
+		var currentLeft = self.getCurrentLeft();
+		var slideWidth = self.getSlideWidth();
+		var difference = Math.abs(leftPosition - currentLeft);
+		if (difference > slideWidth) {
+			self.moveFirstRight();
+			self.setCurrentIndex(self.currentHIndex + 1);
+		}
+	};
 
-				var callback = function() {
-								var currentLeft = self.getCurrentLeft();
-								var slideWidth = self.getSlideWidth();
-								var difference = Math.abs(leftPosition - currentLeft);
-								if (difference > slideWidth) {
-												self.moveFirstRight();
-												self.setCurrentIndex(self.currentHIndex + 1);
-								}
-				};
-
-				if(!window.isMagicMouse) {
-								var newLeft = currentLeft - self.mouseSens ;
-								self.slider.animate({left: newLeft}, 200, callback);
-				} else {
-								var newLeft = currentLeft - self.mouseSens * delta;
-								self.slider.css({left: newLeft});
-								setTimeout(callback, 0);
-				}
+	// if(!window.isMagicMouse) {
+	// 	var newLeft = currentLeft - self.mouseSens ;
+	// 	self.slider.animate({left: newLeft}, 200, callback);
+	// } else {
+	// 	var newLeft = currentLeft + self.mouseSens * delta;
+	// 	self.slider.css({left: newLeft});
+	// 	setTimeout(callback, 0);
+	// }
+	var newLeft = currentLeft - self.mouseSens ;
+	self.slider.css({left: newLeft});
+	setTimeout(callback, 0);
 }
 
 HorizontalSlider.prototype.scrollStop = function(direction) {
-				var difference = Math.abs(this.getLeftPosition() - this.getCurrentLeft());
-
-				if (difference > 90) {
-								if (direction == 'left') this.slideNext(1, 900, 'easeOutExpo');
-								if (direction == 'right') this.slidePrev(1, 900, 'easeOutExpo');
-				}
-				//this.centerSlider();
+	var self = this;
+	// var difference = Math.abs(this.getLeftPosition() - this.getCurrentLeft());
+	// if (difference > 90) {
+	// 	if (direction == 'left') this.slideNext(1, 900, 'easeOutExpo');
+	// 	if (direction == 'right') this.slidePrev(1, 900, 'easeOutExpo');
+	// }
+	setTimeout(function() {
+		self.centerSlider();
+	}, 300)
 }
 
 HorizontalSlider.prototype.startAutoScroll = function (direction) {
+	var self = this;
+	if (direction == 'left') direction = -1;
+	if (direction == 'right') direction = 1;
 
-				var self = this;
+	clearInterval(self.autoScrollInterval);
+	self.autoScrollInterval = setInterval(function(){
+		if (self.navBarClicked) {
+			self.stopAutoScroll();
+			return 0;
+		}
 
-				if (direction == 'left') direction = -1;
-				if (direction == 'right') direction = 1;
+		self.slider.stop(false, true);
+		var currentLeft = self.getCurrentLeft()
+		var leftPosition = self.getLeftPosition();
 
-				clearInterval(self.autoScrollInterval);
+		var callback = function() {
+			var currentLeft = self.getCurrentLeft();
+			var slideWidth = self.getSlideWidth();
+			var difference = Math.abs(leftPosition - currentLeft);
 
-				self.autoScrollInterval = setInterval(function(){
+			if (difference > slideWidth) {
+				if (direction == -1) {
+					self.moveFirstRight();
+					self.setCurrentIndex(self.currentHIndex + 1);
+				} else {
+					self.moveLastLeft();
+					self.setCurrentIndex(self.currentHIndex - 1);
+				}
+			}
+		}
 
-								if (self.navBarClicked) {
-												self.stopAutoScroll();
-												return 0;
-								}
-
-								self.slider.stop(false, true);
-								var currentLeft = self.getCurrentLeft()
-								var leftPosition = self.getLeftPosition();
-
-								var callback = function() {
-												var currentLeft = self.getCurrentLeft();
-												var slideWidth = self.getSlideWidth();
-												var difference = Math.abs(leftPosition - currentLeft);
-
-												if (difference > slideWidth) {
-																if (direction == -1) {
-																				self.moveFirstRight();
-																				self.setCurrentIndex(self.currentHIndex + 1);
-																} else {
-																				self.moveLastLeft();
-																				self.setCurrentIndex(self.currentHIndex - 1);
-																}
-												}
-								}
-
-								var newLeft = currentLeft + self.mouseSens * direction * 1.5;
-								self.isSliding = true;
-								self.slider.animate({'left': newLeft}, 250, 'linear', callback);
-
-				}, 250)
+		var newLeft = currentLeft + self.mouseSens * direction * 1.5;
+		self.isSliding = true;
+		self.slider.animate({'left': newLeft}, 500, 'linear', callback);
+	}, 500)
 }
 
 HorizontalSlider.prototype.stopAutoScroll = function (direction) {
@@ -1069,14 +1093,18 @@ HorizontalSlider.prototype.stopAutoScroll = function (direction) {
 	clearInterval(self.autoScrollInterval);
 	self.isSliding = false;
 
-	var difference = Math.abs(self.getLeftPosition() - self.getCurrentLeft());
-	if (difference > 100  && difference < self.getSlideWidth() + 100) {
-		if (direction == 'left') self.slidePrev(1, 900, 'easeOutExpo');
-		if (direction == 'right') self.slideNext(1, 900, 'easeOutExpo');
-	}
-	else {
+	// var difference = Math.abs(self.getLeftPosition() - self.getCurrentLeft());
+	// if (difference > 100  && difference < self.getSlideWidth() + 100) {
+	// 	if (direction == 'left') self.slidePrev(1, 900, 'easeOutExpo');
+	// 	if (direction == 'right') self.slideNext(1, 900, 'easeOutExpo');
+	// }
+	// else {
+	// 	self.centerSlider();
+	// }
+
+	setTimeout(function() {
 		self.centerSlider();
-	}
+	}, 300)
 }
 
 HorizontalSlider.prototype.alignImages = function() {
@@ -1092,41 +1120,43 @@ HorizontalSlider.prototype.alignImage = function(image) {
 }
 
 HorizontalSlider.prototype.resizeSlider = function(first_time) {
-				var self = this;
-				var w = Math.min(Math.floor(deviceWidth*0.49), 699);
-				var h = Math.ceil(w*0.67);
-				var cHeight = h + vSlider.getTitleHeight()*2;
+	var self = this;
+	var w = Math.min(Math.floor(deviceWidth*0.49), 699);
+	var h = Math.ceil(w*0.67);
+	var cHeight = h + vSlider.getTitleHeight()*2;
 
-				if (deviceWidth >= 765) {
-								$('#horizontal-container').height(h + self.getNavBarHeight() * 2);
-								$('#horizontal-slider').height(h);
-								$('#horizontal-slider').css('top', self.getNavBarHeight());
-								$('#horizontal-slider li').width(w);
-								$('#horizontal-slider li').height(h);
-				}
-				else {
-								var w = 250;//constant
-								var h = 167;//constant
-								var navBarWidth = 12;
-								$('#horizontal-slider').attr( "style", "" );
-								$('#horizontal-container').height(h + 2 * navBarWidth);
-								$('#horizontal-slider').height(h);
-								$('#horizontal-slider li').width(w);
-								$('#horizontal-slider li').height(h);
-				}
+	if (deviceWidth >= 765) {
+		$('#horizontal-container').height(h + self.getNavBarHeight() * 2);
+		$('#horizontal-slider').height(h);
+		$('#horizontal-slider').css('top', self.getNavBarHeight());
+		$('#horizontal-slider li').width(w);
+		$('#horizontal-slider li').height(h);
+	}
+	else {
+		var w = 250;//constant
+		var h = 167;//constant
+		var navBarWidth = 12;
+		$('#horizontal-slider').attr( "style", "" );
+		$('#horizontal-container').height(h + 2 * navBarWidth);
+		$('#horizontal-slider').height(h);
+		$('#horizontal-slider li').width(w);
+		$('#horizontal-slider li').height(h);
+	}
 
-				$('#hover-slide h3').css('line-height', h + 'px');
-				$('#horizontal-container').css('top', self.getTopDistance());
+	$('#hover-slide h3').css('line-height', h + 'px');
+	$('#horizontal-container').css('top', self.getTopDistance());
 
-				self.alignImages();
+	self.alignImages();
 
-				self.resizeText()
-				self.slider.width(self.getSlideWidth() * self.total_HSlides);
-				self.slider.css('left', self.getLeftPosition());
-				if (!first_time) {
-								self.alignPagination();
-								self.alignVideos();
-				}
+	self.resizeText()
+	self.slider.width(self.getSlideWidth() * self.total_HSlides);
+	self.slider.css('left', self.getLeftPosition());
+	if (!first_time) {
+		self.alignPagination();
+		self.alignVideos();
+	}
+
+	self.resizeHorizontalHoverZones();
 }
 
 HorizontalSlider.prototype.resizeText = function() {
