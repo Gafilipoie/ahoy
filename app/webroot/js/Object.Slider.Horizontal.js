@@ -979,6 +979,7 @@ HorizontalSlider.prototype.centerSlider = function() {
 HorizontalSlider.prototype.scrollPrev = function(delta) {
 	var self = this;
 	clearTimeout(self.timeoutEvent);
+	clearTimeout(self.scrollStopTimeout);
 	self.timeoutEvent = setTimeout(function(){self.scrollStop('right');}, 300);
 	this.slider.stop(false, true);
 	var currentLeft = self.getCurrentLeft();
@@ -1002,7 +1003,7 @@ HorizontalSlider.prototype.scrollPrev = function(delta) {
 	// 	self.slider.css({left: newLeft});
 	// 	setTimeout(callback, 0);
 	// }
-	var newLeft = currentLeft + self.mouseSens;
+	var newLeft = currentLeft + 50 * 1;
 	self.slider.css({left: newLeft});
 	setTimeout(callback, 0);
 }
@@ -1010,6 +1011,7 @@ HorizontalSlider.prototype.scrollPrev = function(delta) {
 HorizontalSlider.prototype.scrollNext = function(delta) {
 	var self = this;
 	clearTimeout(self.timeoutEvent);
+	clearTimeout(self.scrollStopTimeout);
 	self.timeoutEvent = setTimeout(function(){self.scrollStop('left');}, 300);
 	this.slider.stop(false, true);
 	var currentLeft = self.getCurrentLeft();
@@ -1033,7 +1035,7 @@ HorizontalSlider.prototype.scrollNext = function(delta) {
 	// 	self.slider.css({left: newLeft});
 	// 	setTimeout(callback, 0);
 	// }
-	var newLeft = currentLeft - self.mouseSens ;
+	var newLeft = currentLeft - 50 * 1;
 	self.slider.css({left: newLeft});
 	setTimeout(callback, 0);
 }
@@ -1045,7 +1047,7 @@ HorizontalSlider.prototype.scrollStop = function(direction) {
 	// 	if (direction == 'left') this.slideNext(1, 900, 'easeOutExpo');
 	// 	if (direction == 'right') this.slidePrev(1, 900, 'easeOutExpo');
 	// }
-	setTimeout(function() {
+	self.scrollStopTimeout = setTimeout(function() {
 		self.centerSlider();
 	}, 300)
 }
