@@ -42,11 +42,11 @@
 }
 #h-hover-prev {
   left: 0px;
-  width: 36%;
+  width: 62%;
 }
 #h-hover-next {
   right: 0px;
-  width: 17%;
+  width: 38%;
 }
 
 #horizontal-thover,
@@ -280,6 +280,13 @@
 }
 
 @media (max-width: 765px) {
+
+  #h-hover-prev {
+    width: 50%;
+  }
+  #h-hover-next {
+    width: 50%;
+  }
 
   #horizontal-container {
     display: none;

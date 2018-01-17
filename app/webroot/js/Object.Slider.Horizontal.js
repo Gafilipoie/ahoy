@@ -47,19 +47,21 @@ function HorizontalSlider() {
 
 /*************** GET FUNCTIONS ****************/
 HorizontalSlider.prototype.resizeHorizontalHoverZones = function() {
-	var vSliderLeft = vSlider.vContainer.css('left');
-	var vSliderRight = vSlider.vContainer.css('right');
-	var vSliderMarginLeft = vSlider.vContainer.css('margin-left');
-	var vSliderMarginRight = vSlider.vContainer.css('margin-right');
+	var bodyWidth = $('body').width();
+	var vSliderLeft = parseInt(vSlider.vContainer.css('left'));
+	var vSliderRight = parseInt(vSlider.vContainer.css('right'));
+	var vSliderWidth = parseInt(vSlider.vContainer.css('width'));
+	var vSliderMarginLeft = parseInt(vSlider.vContainer.css('margin-left'));
+	var vSliderMarginRight = parseInt(vSlider.vContainer.css('margin-right'));
 
-	if (vSliderMarginLeft == '0px') {
+	if (vSliderMarginLeft == 0) {
 		$('#h-hover-prev').css('width', vSliderLeft);
 	} else {
 		$('#h-hover-prev').css('width', vSliderMarginLeft);
 	}
 
-	if (vSliderMarginRight == '0px') {
-		$('#h-hover-next').css('width', vSliderRight);
+	if (vSliderMarginRight == 0) {
+		$('#h-hover-next').css('width', bodyWidth - vSliderLeft - vSliderWidth);
 	} else {
 		$('#h-hover-next').css('width', vSliderMarginRight);
 	}
@@ -110,7 +112,7 @@ HorizontalSlider.prototype.getSlideMargin = function() {
 
 HorizontalSlider.prototype.getLeftPosition = function() {
 	var self = this;
-	var halfslides = parseInt(self.getSlideCount()/2) - 1;
+	var halfslides = parseInt(self.getSlideCount()/2);
 	var slideWidth =  self.getSlideWidth();
 	var leftDistance =  this.getLeftDistance() + this.getSlideMargin();
 	var newLeft = 0 - halfslides * slideWidth + leftDistance;
@@ -184,14 +186,13 @@ HorizontalSlider.prototype.init = function(settings){
 }
 
 HorizontalSlider.prototype.initPosition = function(){
+	var self = this;
+	var slideWidth =  self.getSlideWidth();
+	var total = self.getSlideCount();
 
-				var self = this;
-				var slideWidth =  self.getSlideWidth();
-				var total = self.getSlideCount();
-
-				self.slider.css('width', total * slideWidth);
-				self.hContainer.css('top', self.getTopDistance());
-				self.slider.css('left', self.getLeftPosition());
+	self.slider.css('width', total * slideWidth);
+	self.hContainer.css('top', self.getTopDistance());
+	self.slider.css('left', self.getLeftPosition());
 }
 
 HorizontalSlider.prototype.initPagination = function() {
@@ -270,8 +271,8 @@ HorizontalSlider.prototype.initEvents = function() {
 	});
 
 	$('.horizontal-pagination li').on('click', function(ev){self.goToSlide($(this).index());});
-	$('.horizontal-prev span').on('click', function(ev){ self.navBarClicked = true; self.slidePrev(1); });
-	$('.horizontal-next span').on('click', function(ev){ self.navBarClicked = true; self.slideNext(1); });
+	$('.horizontal-prev span').on('click', function(ev){self.navBarClicked = true; self.slidePrev(1);});
+	$('.horizontal-next span').on('click', function(ev){self.navBarClicked = true; self.slideNext(1);});
 	//self.hContainer.on('click', function(ev){console.log('hContainer click')});
 
 	$('#horizontal-slider li .text a').on('click', function(ev){ ev.stopImmediatePropagation(); });
@@ -380,7 +381,7 @@ HorizontalSlider.prototype.initEvents = function() {
 	var clickedIndex = -1;
 
 	function mouseDownEvent(ev, x, y, self) {
-		clickedIndex =  convertID($(ev.target).closest('li').attr('id'));
+		clickedIndex =  convertID($(ev.target).parent('li').attr('id'));
 		if (self.isVideo(clickedIndex)) return;
 		self.slider.addClass('clicked');
 		self.slider.removeClass('dragable');
@@ -849,35 +850,30 @@ HorizontalSlider.prototype.close = function() {
 }
 
 HorizontalSlider.prototype.goToSlide = function(index, speed, easing) {
+	var self = this;
+	if (index < 0) index = this.total_HSlides-1;
+	if (index == this.total_HSlides) index = 0;
+	this.isSliding = true;
+	self.lastGoToIndex = index;
 
-				var self = this;
+	var speed = speed || this.openTime;
+	var easing = easing || this.openEasing;
+	var distanceLeft = self.getDistanceLeft(index);
+	var distanceRight = self.getDistanceRight(index);
 
-				if (index < 0) index = this.total_HSlides-1;
-				if (index == this.total_HSlides) index = 0;
-
-				this.isSliding = true;
-				self.lastGoToIndex = index;
-
-				var speed = speed || this.openTime;
-				var easing = easing || this.openEasing;
-				var distanceLeft = self.getDistanceLeft(index);
-				var distanceRight = self.getDistanceRight(index);
-
-				if (distanceLeft < distanceRight) {
-								self.slidePrev(distanceLeft, speed, easing);
-				} else {
-								self.slideNext(distanceRight, speed, easing);
-				}
+	if (distanceLeft < distanceRight) {
+		self.slidePrev(distanceLeft, speed, easing);
+	} else {
+		self.slideNext(distanceRight, speed, easing);
+	}
 }
 
 HorizontalSlider.prototype.getDistanceLeft = function(index) {
-
-				var total  = this.total_HSlides;
-
-				if(this.currentHIndex < index)
-								return Math.abs(total - index + this.currentHIndex);
-				else
-								return Math.abs(index - this.currentHIndex);
+	var total  = this.total_HSlides;
+	if(this.currentHIndex < index)
+		return Math.abs(total - index + this.currentHIndex);
+	else
+		return Math.abs(index - this.currentHIndex);
 }
 
 HorizontalSlider.prototype.getDistanceRight = function(index) {
@@ -891,34 +887,27 @@ HorizontalSlider.prototype.getDistanceRight = function(index) {
 }
 
 HorizontalSlider.prototype.slidePrev = function(distance, speed, easing) {
+	var speed = speed || this.openTime;
+	var easing = easing || this.openEasing;
+	var self = this;
+	var currentLeft = self.getCurrentLeft()
+	var leftPosition = self.getLeftPosition();
+	var slideWidth = self.getSlideWidth();
+	var difference =  slideWidth - Math.abs(leftPosition - currentLeft);
+	var newLeft = currentLeft + slideWidth * (distance - 1) + difference;
 
-				var speed = speed || this.openTime;
-				var easing = easing || this.openEasing;
+	self.jumpDistance = distance;
 
-				var self = this;
-				var currentLeft = self.getCurrentLeft()
-				var leftPosition = self.getLeftPosition();
-				var slideWidth = self.getSlideWidth();
-				var difference =  slideWidth - Math.abs(leftPosition - currentLeft);
-				var newLeft = currentLeft + slideWidth * (distance - 1) + difference;
-
-				self.jumpDistance = distance;
-
-				self.slider.stop(false,true).animate({
-								left: newLeft
-				}, speed, easing, function() {
-
-								if (self.interruptGoTo == true) return
-
-								for (var i = distance - 1; i >= 0; i--) {
-												self.moveLastLeft();
-												self.setCurrentIndex(self.currentHIndex - 1);
-								};
-
-								self.toogleVideoControls();
-								self.isSliding = false;
-								setTimeout(function(){if (!self.isSliding) self.centerSlider()}, 30);
-				});
+	self.slider.stop(false,true).animate({left: newLeft}, speed, easing, function() {
+		if (self.interruptGoTo == true) return
+		for (var i = distance - 1; i >= 0; i--) {
+			self.moveLastLeft();
+			self.setCurrentIndex(self.currentHIndex - 1);
+		};
+		self.toogleVideoControls();
+		self.isSliding = false;
+		setTimeout(function(){if (!self.isSliding) self.centerSlider()}, 30);
+	});
 }
 
 HorizontalSlider.prototype.slideNext = function(distance, speed, easing) {
@@ -999,7 +988,7 @@ HorizontalSlider.prototype.scrollPrev = function(delta) {
 	// 	self.slider.css({left: newLeft});
 	// 	setTimeout(callback, 0);
 	// }
-	var newLeft = currentLeft + 50 * 1;
+	var newLeft = currentLeft + 40 * delta;
 	self.slider.css({left: newLeft});
 	setTimeout(callback, 0);
 }
@@ -1031,7 +1020,7 @@ HorizontalSlider.prototype.scrollNext = function(delta) {
 	// 	self.slider.css({left: newLeft});
 	// 	setTimeout(callback, 0);
 	// }
-	var newLeft = currentLeft - 50 * 1;
+	var newLeft = currentLeft + 40 * delta;
 	self.slider.css({left: newLeft});
 	setTimeout(callback, 0);
 }

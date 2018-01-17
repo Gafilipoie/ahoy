@@ -1033,7 +1033,7 @@ VerticalSlider.prototype.scrollDown = function(delta) {
 	// 	self.slider.css({top: newTop});
 	// 	setTimeout(callback, 0);
 	// }
-	var newTop = currentTop + 50 * 1;
+	var newTop = currentTop + 40 * delta;
 	self.slider.css({top: newTop});
 	setTimeout(callback, 0);
 }
@@ -1065,7 +1065,7 @@ VerticalSlider.prototype.scrollUp = function(delta) {
 	// 	self.slider.css({top: newTop});
 	// 	setTimeout(callback, 0);
 	// }
-	var newTop = currentTop - 50 * 1;
+	var newTop = currentTop + 40 * delta;
 	self.slider.css({top: newTop});
 	setTimeout(callback, 0);
 }
