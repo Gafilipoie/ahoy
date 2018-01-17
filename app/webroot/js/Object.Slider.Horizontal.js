@@ -551,6 +551,8 @@ HorizontalSlider.prototype.unbindEvents = function() {
 				this.hContainer.off();
 				this.slider.off();
 				$('hover-slide').off();
+				$("#h-hover-prev").off();
+				$("#h-hover-next").off();
 }
 
 HorizontalSlider.prototype.resetSlider = function(){
@@ -920,34 +922,28 @@ HorizontalSlider.prototype.slidePrev = function(distance, speed, easing) {
 }
 
 HorizontalSlider.prototype.slideNext = function(distance, speed, easing) {
+	var speed = speed || this.openTime;
+	var easing = easing || this.openEasing;
 
-				var speed = speed || this.openTime;
-				var easing = easing || this.openEasing;
+	var self = this;
+	var currentLeft = self.getCurrentLeft();
+	var leftPosition = self.getLeftPosition();
+	var slideWidth = self.getSlideWidth();
+	var difference =  slideWidth - Math.abs(leftPosition - currentLeft);
+	var newLeft = currentLeft - slideWidth * (distance - 1) - difference;
 
-				var self = this;
-				var currentLeft = self.getCurrentLeft();
-				var leftPosition = self.getLeftPosition();
-				var slideWidth = self.getSlideWidth();
-				var difference =  slideWidth - Math.abs(leftPosition - currentLeft);
-				var newLeft = currentLeft - slideWidth * (distance - 1) - difference;
+	self.jumpDistance = distance;
 
-				self.jumpDistance = distance;
-
-				self.slider.stop(false,true).animate({
-								left: newLeft
-				}, speed, easing, function() {
-
-								if (self.interruptGoTo == true) return
-
-								for (var i = distance - 1; i >= 0; i--) {
-												self.moveFirstRight();
-												self.setCurrentIndex(self.currentHIndex + 1);
-								};
-
-								self.toogleVideoControls();
-								self.isSliding = false;
-								setTimeout(function(){if (!self.isSliding) self.centerSlider()}, 30);
-				});
+	self.slider.stop(false,true).animate({left: newLeft}, speed, easing, function() {
+		if (self.interruptGoTo == true) return
+		for (var i = distance - 1; i >= 0; i--) {
+			self.moveFirstRight();
+			self.setCurrentIndex(self.currentHIndex + 1);
+		};
+		self.toogleVideoControls();
+		self.isSliding = false;
+		setTimeout(function(){if (!self.isSliding) self.centerSlider()}, 30);
+	});
 }
 
 HorizontalSlider.prototype.moveFirstRight = function() {
