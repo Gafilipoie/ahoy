@@ -259,7 +259,7 @@ HorizontalSlider.prototype.initEvents = function() {
 	var slideWidth = self.getSlideWidth();
 	var leftPosition        = self.getLeftPosition();
 
-	$('body').bind('click', '#container', function(ev){
+	$('body').on('click touchend', '#container', function(ev){
 		if (ev.target.id == 'left-column' || ev.target.id == 'container') hSlider.close();
 	});
 

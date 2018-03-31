@@ -43,6 +43,8 @@ function VerticalSlider() {
 	this.navBarClicked = false;
 	this.lastGoToIndex = 0;
 	this.interruptGoTo = false;
+	this.isMouseDown = false;
+	this.isMouseMoved = false;
 }
 
 /*************** GET FUNCTIONS ****************/
@@ -313,6 +315,7 @@ VerticalSlider.prototype.initEvents = function(){
 
 	function mouseDownEvent(ev, x, y, self) {
 		//if (self.isSliding) return;
+		self.isMouseDown = true;
 		clickedIndex =  convertID($(ev.target).closest('li').attr('id'));
 		self.slider.addClass('clicked');
 		self.slider.removeClass('dragable');
@@ -344,6 +347,8 @@ VerticalSlider.prototype.initEvents = function(){
 			self.setCurrentIndex(clickedIndex);
 			ev.preventDefault();
 			self.centerSlider();
+
+			self.isMouseMoved = false;
 			return
 		}
 
@@ -353,6 +358,7 @@ VerticalSlider.prototype.initEvents = function(){
 
 	function mouseMoveEvent(ev, x, y, self) {
 		ev.preventDefault();
+		if (self.isMouseDown) self.isMouseMoved = true;
 
 		if(!self.slider.hasClass('clicked')  || hSlider.isOpen) return;
 
@@ -380,12 +386,16 @@ VerticalSlider.prototype.initEvents = function(){
 	}
 
 	function mouseUpEvent(ev){
-
+		self.isMouseDown = false;
+		if (self.isMouseMoved) {
+			self.isMouseMoved = false;
+			return;
+		};
 		ev.stopPropagation();
 		vSlider.slider.removeClass('clicked');
 		self.slider.removeClass('dragable');
 
-		if(clientDevice == 'mobile') {
+		if(clientDevice == 'mobile' || clientDevice == 'ipad') {
 			var difY = (self.difTouchY - self.lastTouchMoveY)/ 15;
 			var difX = (self.difTouchX - self.lastTouchMoveX)/ 15;
 		} else {
@@ -400,7 +410,6 @@ VerticalSlider.prototype.initEvents = function(){
 			self.interruptGoTo = false;
 			return;
 		}
-
 		if( Math.abs(difY) >= 1) {
 			if (hSlider.isOpen) return;
 			if( difY <= -1) {
