@@ -26,7 +26,7 @@ $(document).ready(function() {
 	if(settings) mouseSens = parseFloat(settings.mouse_sens);
 
 	if (window.location.pathname == "/") {
-		routie('/category/our_best');
+		routie('/category/our_top_100');
 	} else {
 		routie(window.location.pathname);
 	}
