@@ -188,7 +188,20 @@ function attachMenuEvents() {
 			$('#mobile-menu').hide();
 		}
 
-	})
+	});
+
+	$('#mobile-logo').on('touchend', function(){
+		var self = $(this)
+		if (!window.menuVisible) {
+			$('#mobile-menu').show();
+			window.menuVisible = true;
+		}
+		else {
+			window.menuVisible = false;
+			$('#mobile-menu').hide();
+		}
+
+	});
 }
 
 function showLoader() {
