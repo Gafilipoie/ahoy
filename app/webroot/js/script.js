@@ -177,31 +177,33 @@ function attachMenuEvents() {
 
 	});
 
-	$('#mobile-logo').on('click', function(){
-		var self = $(this)
-		if (!window.menuVisible) {
-			$('#mobile-menu').show();
-			window.menuVisible = true;
-		}
-		else {
-			window.menuVisible = false;
-			$('#mobile-menu').hide();
-		}
+	if(!Modernizr.touch) {
+		$('#mobile-logo').on('click', function(){
+			var self = $(this)
+			if (!window.menuVisible) {
+				$('#mobile-menu').show();
+				window.menuVisible = true;
+			}
+			else {
+				window.menuVisible = false;
+				$('#mobile-menu').hide();
+			}
 
-	});
+		});
+	} else {
+		$('#mobile-logo').on('touchend', function(){
+			var self = $(this)
+			if (!window.menuVisible) {
+				$('#mobile-menu').show();
+				window.menuVisible = true;
+			}
+			else {
+				window.menuVisible = false;
+				$('#mobile-menu').hide();
+			}
 
-	$('#mobile-logo').on('touchend', function(){
-		var self = $(this)
-		if (!window.menuVisible) {
-			$('#mobile-menu').show();
-			window.menuVisible = true;
-		}
-		else {
-			window.menuVisible = false;
-			$('#mobile-menu').hide();
-		}
-
-	});
+		});
+	}
 }
 
 function showLoader() {
