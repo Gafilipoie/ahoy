@@ -368,7 +368,7 @@ VerticalSlider.prototype.initEvents = function(){
 		curX = x;
 		curY = y;
 		var sliderTop = curY - self.lastTouchMoveY;
-		self.slider.stop(false,true).css({'top' : '+='+sliderTop});
+		self.slider.css({'top' : '+='+sliderTop});
 		var currentTop  = self.getCurrentTop();
 		topPosition = self.getTopPosition();
 		var difference  = topPosition - currentTop;
@@ -387,10 +387,10 @@ VerticalSlider.prototype.initEvents = function(){
 
 	function mouseUpEvent(ev){
 		self.isMouseDown = false;
-		if (self.isMouseMoved) {
-			self.isMouseMoved = false;
-			return;
-		};
+		// if (self.isMouseMoved) {
+		// 	self.isMouseMoved = false;
+		// 	return;
+		// };
 		ev.stopPropagation();
 		vSlider.slider.removeClass('clicked');
 		self.slider.removeClass('dragable');
@@ -410,20 +410,28 @@ VerticalSlider.prototype.initEvents = function(){
 			self.interruptGoTo = false;
 			return;
 		}
-		if( Math.abs(difY) >= 1) {
+		if( Math.abs(difY) > 0) {
 			if (hSlider.isOpen) return;
+
+			if (Math.abs(difY) > 0 && Math.abs(difY) < 0.5) {
+				if (self.isMouseMoved) {
+					self.isMouseMoved = false;
+					return;
+				};
+			}
+
 			if( difY <= -1) {
 				if (hSlider.isOpen)  { hSlider.close(); return; }
 				self.isSwiping = true;
-				self.slidePrev(1);
-			}
-			else {
+				// self.slidePrev(1);
+				self.slidePrev(Math.round(Math.abs(difY)));
+			} else {
 				if (hSlider.isOpen)  { hSlider.close(); return; }
 				self.isSwiping = true;
-				self.slideNext(1);
+				// self.slideNext(1);
+				self.slideNext(Math.round(Math.abs(difY)));
 			}
-		}
-		else {
+		} else {
 			//check if prev or next slide is clicked
 			//if (Math.abs(difX) == 0 && Math.abs(difY) == 0 && clickedIndex != self.currentVIndex) {
 
@@ -582,9 +590,9 @@ VerticalSlider.prototype.stopAutoScroll = function (direction) {
 	// 	self.centerSlider();
 	// }
 
-	setTimeout(function() {
-		self.centerSlider();
-	}, 300);
+	// setTimeout(function() {
+	// 	self.centerSlider();
+	// }, 300);
 }
 
 VerticalSlider.prototype.open = function(category, goTo){
@@ -964,7 +972,7 @@ VerticalSlider.prototype.slidePrev = function(distance, speed, easing) {
 
 	self.jumpDistance = distance;
 
-	self.slider.stop(false,true).animate({
+	self.slider.stop(true,true).animate({
 		top: newTop
 	}, speed, easing, function() {
 
@@ -977,7 +985,7 @@ VerticalSlider.prototype.slidePrev = function(distance, speed, easing) {
 
 		self.isSliding = false;
 		self.jumpDistance = 0;
-		setTimeout(function(){if (!self.isSliding) self.centerSlider()}, 30);
+		// setTimeout(function(){if (!self.isSliding) self.centerSlider()}, 30);
 	});
 }
 
@@ -1006,7 +1014,7 @@ VerticalSlider.prototype.slideNext = function(distance, speed, easing) {
 		};
 
 		self.isSliding = false;
-		setTimeout(function(){if (!self.isSliding) self.centerSlider()}, 30);
+		// setTimeout(function(){if (!self.isSliding) self.centerSlider()}, 30);
 		self.jumpDistance = 0;
 	});
 }
@@ -1086,9 +1094,9 @@ VerticalSlider.prototype.scrollStop = function(direction) {
 	// 	if (direction == 'up') this.slideNext(1, 900, 'easeOutExpo');
 	// 	if (direction == 'down') this.slidePrev(1, 900, 'easeOutExpo');
 	// }
-	self.scrollStopTimeout = setTimeout(function() {
-		self.centerSlider();
-	}, 300)
+	// self.scrollStopTimeout = setTimeout(function() {
+	// 	self.centerSlider();
+	// }, 300)
 }
 
 VerticalSlider.prototype.moveFirstDown = function() {
