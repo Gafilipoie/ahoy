@@ -64,7 +64,6 @@
 				     ['escape' => false, 'id' => 'logo', 'title' => 'AHOY']
 				); ?>
 				<div id="move-menu">
-
 					<ul id="menu">
 						<?php foreach($categories as $category): ?>
 							<li style="color: <?php echo $options['primary_text_color'] ?>;">
@@ -100,9 +99,15 @@
 							</li>
 						<?php endforeach; ?>
 					</ul>
+
 				</div>
 
 				<div id="social">
+					<div class="social-instagram-wrapper">
+						<a class="social-instagram"  href="https://www.instagram.com/ahoystudios/" target="_BLANK">
+							<img src="/img/instagram.png" alt="instagram-ico" />
+						</a>
+					</div>
 					<a id="email-address" href="mailto:<?php echo $options['email_address'] ?>" style="color: <?php echo $options['primary_text_color'] ?>; border-bottom: 1px solid <?php echo $options['primary_text_color'] ?>;"><?php echo $options['email_address'] ?></a>
 					<a href="<?php echo $options['facebook_link'] ?>" target="_blank"><?php echo $this->Html->image('facebook_icon.png', array('width' => 20, 'height' => 20, 'alt' => 'facebook')) ?></a>
 				</div>

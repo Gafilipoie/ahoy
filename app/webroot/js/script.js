@@ -100,7 +100,7 @@ function menu_reposition() {
 	var h = vSlider.getSlideHeight() ||  Math.floor(w*0.67);
 
 	var menuItemsCount = $('#menu li').length;
-	var lineHeight = (h - 27) / menuItemsCount;
+	var lineHeight = (h - 70) / menuItemsCount;
 	$('#menu li').css({'line-height': lineHeight + 'px', 'font-size': (lineHeight-4)+'px'})
 }
 

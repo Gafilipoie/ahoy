@@ -157,12 +157,23 @@ a{
 	text-decoration: none;
 }
 
-#social a:first-child{
+#social a:nth-child(2){
 	border-bottom: 1px solid #28a7f0;
 }
 
 #social a:hover{
 	color: #231F20
+}
+
+.social-instagram-wrapper {
+	margin-bottom: 30px;
+}
+.social-instagram-wrapper .social-instagram {
+	display: inline-block;
+}
+.social-instagram-wrapper .social-instagram img {
+	width: 42px;
+	height: 40px;
 }
 
 #mobile-logo{
