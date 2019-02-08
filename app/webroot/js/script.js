@@ -91,10 +91,11 @@ function mobile_init(){
 }
 
 function menu_reposition() {
+	var moveMenuTopValue = hSlider.getTopDistance() + vSlider.getTitleHeight();
 	$('#left-column').animate({'opacity':1}, 100,'easeOutExpo');
 	$('#logo').css('padding-top', ( hSlider.getTopDistance() - $('#logo').height() )/2 );
 	$('#logo').css('color', options.primary_text_color);
-	$('#move-menu').css('top', hSlider.getTopDistance() + vSlider.getTitleHeight())
+	$('#move-menu').css('top', moveMenuTopValue)
 
 	var w = Math.min(Math.floor(deviceWidth*0.49), 699);
 	var h = vSlider.getSlideHeight() ||  Math.floor(w*0.67);
@@ -102,6 +103,8 @@ function menu_reposition() {
 	var menuItemsCount = $('#menu li').length;
 	var lineHeight = (h - 70) / menuItemsCount;
 	$('#menu li').css({'line-height': lineHeight + 'px', 'font-size': (lineHeight-4)+'px'})
+	$('#social-instagram-wrapper').css('bottom', (-moveMenuTopValue-20) / 2)
+	$('#social-instagram img').css({'width': (lineHeight-2)*2+'px', 'height': (lineHeight-4)*2+'px'})
 }
 
 function attachMenuEvents() {

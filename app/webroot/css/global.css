@@ -165,16 +165,22 @@ a{
 	color: #231F20
 }
 
-.social-instagram-wrapper {
+/* .social-instagram-wrapper {
 	margin-bottom: 30px;
+} */
+
+#social-instagram-wrapper {
+	position: absolute;
+	width: 100%;
+	text-align: center;
 }
-.social-instagram-wrapper .social-instagram {
+#social-instagram {
 	display: inline-block;
 }
-.social-instagram-wrapper .social-instagram img {
+/* .social-instagram-wrapper .social-instagram img {
 	width: 42px;
 	height: 40px;
-}
+} */
 
 #mobile-logo{
 	display: none;
