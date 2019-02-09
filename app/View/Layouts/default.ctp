@@ -101,7 +101,8 @@
 					</ul>
 					<div id="social-instagram-wrapper">
 						<a id="social-instagram"  href="https://www.instagram.com/ahoystudios/" target="_BLANK">
-							<img src="/img/instagram.png" alt="instagram-ico" />
+							<img class="social-instagram-grey" src="/img/instagram-grey.png" alt="instagram-ico" />
+							<img class="social-instagram-black" src="/img/instagram-black.png" alt="instagram-ico" />
 						</a>
 					</div>
 				</div>

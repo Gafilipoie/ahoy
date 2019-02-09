@@ -177,10 +177,15 @@ a{
 #social-instagram {
 	display: inline-block;
 }
-/* .social-instagram-wrapper .social-instagram img {
-	width: 42px;
-	height: 40px;
-} */
+#social-instagram .social-instagram-black {
+  display: none;
+}
+#social-instagram:hover .social-instagram-black {
+  display: inline-block;
+}
+#social-instagram:hover .social-instagram-grey {
+  display: none;
+}
 
 #mobile-logo{
 	display: none;
