@@ -56,7 +56,7 @@ function initApplication() {
 	window.MobileMenu_li = MobileMenu.find('li');
 	window.mouseupEventName = 'mouseup';
 	window.clientGesture = false;
-	window.appURL = 'http://'+document.domain+'/';
+	window.appURL = 'https://'+document.domain+'/';
 
 	if (
 		navigator.userAgent.match(/IEMobile/i) ||

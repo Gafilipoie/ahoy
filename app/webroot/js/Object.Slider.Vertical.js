@@ -217,7 +217,7 @@ VerticalSlider.prototype.initEvents = function(){
 		var winHeight = 350;
 		var winTop = (window.innerHeight / 2) - (winHeight / 2);
 		var winLeft = (window.innerWidth / 2) - (winWidth / 2);
-		window.open('http://www.facebook.com/sharer.php?s=100&p[title]=' + title + '&p[summary]=' + descr + '&p[url]=' + url + '&p[images][0]=' + image, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight);
+		window.open('https://www.facebook.com/sharer.php?s=100&p[title]=' + title + '&p[summary]=' + descr + '&p[url]=' + url + '&p[images][0]=' + image, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight);
 	});
 
 	$('.pi-share').on('click', function(ev){
@@ -696,7 +696,7 @@ VerticalSlider.prototype.insertEmptySlides = function() {
 	// Pinterest script
 	var e = document.createElement('script');
 	e.setAttribute('type','text/javascript');
-	e.setAttribute('src','http://assets.pinterest.com/js/pinit.js');
+	e.setAttribute('src','https://assets.pinterest.com/js/pinit.js');
 	document.body.appendChild(e);
 }
 

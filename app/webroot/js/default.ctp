@@ -19,7 +19,7 @@
 		?>
 			<!--<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">-->
 			<!--<script src="http://vjs.zencdn.net/c/video.js"></script>-->
-	  <script src="http://api.html5media.info/1.1.5/html5media.min.js"></script>
+	  <script src="https://api.html5media.info/1.1.5/html5media.min.js"></script>
 	</head>
 	<body style="background: #fff url('../img/<?php echo $options['background_image'] ?>');">
 
