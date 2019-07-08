@@ -1,4 +1,5 @@
 function HorizontalSlider() {
+				this.baseTitle = document.title.split('---')[0];
 				this.slider = $('#horizontal-slider');
 				this.hContainer = $('#horizontal-container');
 				this.hElements = null;
@@ -43,6 +44,11 @@ function HorizontalSlider() {
 				this.navBarClicked = false;
 				this.lastGoToIndex = 0;
 				this.interruptGoTo = false;
+}
+
+HorizontalSlider.prototype.setDocumentTitle = function() {
+	const category = window.location.pathname.split('/')[2];
+	document.title = `${category ? category.toUpperCase() + ' | ' : ''}${this.baseTitle}`;
 }
 
 /*************** GET FUNCTIONS ****************/
@@ -761,7 +767,7 @@ HorizontalSlider.prototype.loadNextImage = function(index) {
 								image_alt = self.jsonData[index-1].Slide.image_alt;
 								image_title = self.jsonData[index-1].Slide.image_title;
 								var src = getFullImagePath(self.jsonData[index-1].Slide.image);
-								$("<img>", { src: src, alt: image_alt, title: image_title }).on('load error', function() {
+								$("<img>", { src: src, alt: image_alt || `image-${index}`, title: image_title }).on('load error', function() {
 												$('#hItem' + (index-1)).prepend(this);
 												var img = $(this)
 												setTimeout(function(){ self.alignImage(img) }, 0);
@@ -836,6 +842,7 @@ HorizontalSlider.prototype.close = function() {
 
 				whereIsNow = $('#menu a.selected, #mobile-menu li a.selected').eq(0).attr('href');
 				history.pushState({}, '', whereIsNow);
+				self.setDocumentTitle();
 				this.hContainer.fadeOut(200);
 				hideLoader();
 				$(".video-js").remove();

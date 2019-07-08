@@ -26,9 +26,13 @@ $(document).ready(function() {
 	if(settings) mouseSens = parseFloat(settings.mouse_sens);
 
 	if (window.location.pathname == "/") {
-		routie('/category/our_top_100');
+		const pathName = '/category/our_top_100';
+		routie(pathName);
+		setDocumentTitle(pathName)
+
 	} else {
 		routie(window.location.pathname);
+		setDocumentTitle(window.location.pathname)
 	}
 
 	menu_reposition();
@@ -41,6 +45,7 @@ $(document).ready(function() {
 
 function initApplication() {
 	//Window variables
+	window.baseTitle = document.title.split('---')[0];
 	window.deviceWidth = $('body').width()
 	window.deviceHeight = $('body').height();
 	window.isMagicMouse = false;
@@ -78,6 +83,13 @@ function initApplication() {
 	    return this.replace(/^\s+/, '').replace(/\s+$/, '');
 	  };
 	}*/
+}
+
+function setDocumentTitle(pathName = '') {
+	const path = pathName.split('/');
+	const project = path[3] ? `${path[3].toUpperCase()} | ` : '';
+	const category = path[2] ? `${path[2].toUpperCase()} | ` : '';
+	document.title = project + category + window.baseTitle;
 }
 
 function hideLoader() {

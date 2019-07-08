@@ -1,5 +1,5 @@
-
 function VerticalSlider() {
+	this.baseTitle = document.title.split('---')[0];
 	this.slider = $('#vertical-slider');
 	this.vContainer = $('#vertical-container');
 	this.vElements = $('#vertical-slider > ul');
@@ -45,6 +45,11 @@ function VerticalSlider() {
 	this.interruptGoTo = false;
 	this.isMouseDown = false;
 	this.isMouseMoved = false;
+}
+
+VerticalSlider.prototype.setDocumentTitle = function(project = '') {
+	const category = window.location.pathname.split('/')[2];
+	document.title = `${project ? project.toUpperCase() + ' | ' : ''}${category.toUpperCase()} | ${this.baseTitle}`;
 }
 
 /*************** GET FUNCTIONS ****************/
@@ -457,6 +462,7 @@ VerticalSlider.prototype.initEvents = function(){
 					projslug = slide.attr('data-project-slug');
 					whereIsNow = $('#menu a.selected, #mobile-menu li a.selected').eq(0).attr('href');
 					history.pushState({}, projslug, whereIsNow+'/'+projslug);
+					self.setDocumentTitle(projslug);
 					hSlider.open(slide.find('a').first().attr('href'));
 				}
 				else {
@@ -598,7 +604,6 @@ VerticalSlider.prototype.stopAutoScroll = function (direction) {
 VerticalSlider.prototype.open = function(category, goTo){
 	var self = this;
 	category = getSlug(category);
-
 	var w = Math.min(Math.floor(deviceWidth*0.49), 699);
 	var navBarWidth = 32; if (clientDevice == 'ipad') navBarWidth = 32;
 	self.vContainer.css('width', w + 2 * navBarWidth).show();
@@ -614,6 +619,7 @@ VerticalSlider.prototype.open = function(category, goTo){
 		self.openActions(data, category);
 		self.jsonData = data;
 		if(goTo) self.goToFindByLink(goTo);
+		self.setDocumentTitle(goTo);
 	}
 	catch(error) {
 		$.ajax({
@@ -623,6 +629,7 @@ VerticalSlider.prototype.open = function(category, goTo){
 		}).done(function(data){
 			self.openActions(data, category);
 			if(goTo) self.goToFindByLink(goTo);
+			self.setDocumentTitle(goTo);
 		});
 	}
 }
@@ -818,7 +825,7 @@ VerticalSlider.prototype.loadNextImage = function() {
 		image_title = self.jsonData.Project[index-1].Slide.image_title;
 		var src = getFullImagePath(self.jsonData.Project[index-1].Slide.image);
 
-		$("<img>", { src: src, alt: image_alt, title: image_title }).on('load error', function() {
+		$("<img>", { src: src, alt: image_alt || `image-${index}`, title: image_title }).on('load error', function() {
 			$('#vItem' + index).find('a').html(this);
 			self.alignImage($('#vItem' + index).find('img'));
 		});
