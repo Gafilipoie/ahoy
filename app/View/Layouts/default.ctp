@@ -8,7 +8,7 @@
 		?>
 		<?php echo $this->Html->charset(); ?>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-		<title>AHOY STUDIOS – Graphic Design and Branding - Connie Koch – NEW YORK / ZURICH / BERLIN---<?php echo $_SERVER['REQUEST_URI'] ?></title>
+		<title>AHOY STUDIOS – Graphic Design and Branding---<?php echo $uriProject ?> <?php echo $uriCategory ?></title>
 		<meta
 			name="description"
 			content="<?php echo $uriProject ?> <?php echo $uriCategory ?> <?php echo $options['description'] ?>"
