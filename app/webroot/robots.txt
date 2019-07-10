@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /project-content
+Disallow: /*project-content
+
+# Sitemap files
+Sitemap: https://ahoystudios.com/sitemap.xml

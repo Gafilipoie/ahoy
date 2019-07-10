@@ -710,9 +710,10 @@ VerticalSlider.prototype.insertEmptySlides = function() {
 VerticalSlider.prototype.addEmptySlide = function(index, position) {
 	var self = this;
 	var category = self.jsonData.Project[index].Project.slug.replace(" ","_");
+	const projectSlug = String(self.jsonData.Project[index].Project.slug).toLowerCase();
 	var href  = appURL + "/slides/view/" + category;
 	var li_elem = $('<li id="vItem'+(index+1)+'"></li>');
-	var aimg_elem = $('<a href="'+href+'"></a>');
+	var aimg_elem = $('<a href="'+href+'" title="'+projectSlug+'"></a>');
 	var h5_elem = $('<h5><span>'+self.jsonData.Project[index].Project.name_en+' / </span>'+self.jsonData.Project[index].Project.name_de+'</h5>');
 	h5_elem.children('span').css('color', options.primary_text_color);
 	// Social Media Share Buttons
@@ -722,7 +723,7 @@ VerticalSlider.prototype.addEmptySlide = function(index, position) {
 	socialButtons.html(fbButton).append(piButton);
 
 	li_elem.html(aimg_elem).append(h5_elem).append(socialButtons);
-	li_elem.attr('data-project-slug', String(self.jsonData.Project[index].Project.slug).toLowerCase());
+	li_elem.attr('data-project-slug', projectSlug);
 	if (position == 'before')
 		self.vElements.prepend(li_elem);
 	else
