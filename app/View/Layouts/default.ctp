@@ -1,14 +1,18 @@
 ﻿<!DOCTYPE html>
-<html >
+<html lang="en">
 	<head>
 		<?php
+			$baseTitle = 'AHOY STUDIOS – Graphic Design and Branding';
 			$uriPieces = explode('/', $_SERVER['REQUEST_URI']);
-			$uriCategory = (isset($uriPieces[2])) ? strtoupper(implode(" ", explode("_", $uriPieces[2]))).' |' : null;
-			$uriProject = (isset($uriPieces[3])) ? strtoupper(implode(" ", explode("_", $uriPieces[3]))).' |' : null;
+			$uriCategory = (isset($uriPieces[2])) ? strtoupper(implode(" ", explode("_", $uriPieces[2]))) : null;
+			$uriProject = (isset($uriPieces[3])) ? strtoupper(implode(" ", explode("_", $uriPieces[3]))) : null;
+			$pageTitle = ((isset($uriProject)) ? $uriProject.' | ' : '') . $uriCategory;
 		?>
 		<?php echo $this->Html->charset(); ?>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-		<title>AHOY STUDIOS – Graphic Design and Branding---<?php echo $uriProject ?> <?php echo $uriCategory ?></title>
+		<title>
+			<?php echo empty($pageTitle) ? $baseTitle : $pageTitle.' --- AHOY STUDIOS' ?>
+		</title>
 		<meta
 			name="description"
 			content="<?php echo $uriProject ?> <?php echo $uriCategory ?> <?php echo $options['description'] ?>"
@@ -25,8 +29,10 @@
 		?>
 	</head>
 	 <body style="background: #fff url('/img/<?php echo $options['background_image'] ?>');">
-		<h1 id="mobile-logo">AHOY</h1>
-		<div id="mobile-menu">
+		<h1 class="hidden"><?php echo empty($pageTitle) ? $baseTitle : $pageTitle ?></h1> <!-- For SEO purposes -->
+		<h2 class="hidden">Founded by Connie Koch and Aline Ozkan</h2> <!-- For SEO purposes -->
+		<p id="mobile-logo">AHOY</p>
+		<header id="mobile-menu">
 			<ul>
 				<?php foreach($categories as $category): ?>
 					<li>
@@ -58,10 +64,10 @@
 					</li>
 				<?php endforeach; ?>
 			</ul>
-		</div>
+		</header>
 
 		<div id="container">
-			<div id="left-column">
+			<header id="left-column">
 				<?php echo $this->Html->link(
 					$this->Html->image('AHOYlogo.png', ['alt' => 'AHOY logo']),
 					'/',
@@ -82,7 +88,7 @@
 									>
 										<?php echo $category['Category']['name_en']; ?>
 									</a>
-									<div style="display:none;">
+									<div class="hidden">
 										<?php $prcass = $catProjects[$category['Category']['id']]; ?>
 										<?php foreach ($prcass as $pra): ?>
 											<?php $tpa = "/category/".$category['Category']['slug']."/".strtolower($pra['Project']['slug']); ?>
@@ -149,7 +155,7 @@
 						</a>
 					<?php endif; ?>
 				</div>
-			</div>
+			</header>
 
 			<?php echo $this->fetch('content'); ?>
 		</div>
@@ -168,7 +174,7 @@
 			echo $this->Html->script('video.min.js');
 
 			//echo $this->Html->script('routie.min');
-			echo $this->Html->script('jquery.router');
+			echo $this->Html->script('jquery.router.min');
 			echo $this->Html->script('Object.Slider.Vertical');
 			echo $this->Html->script('Object.Slider.Horizontal');
 			echo $this->Html->script('Object.Slider.Text');
