@@ -187,6 +187,10 @@ a{
   display: none;
 }
 
+.hidden {
+    display: none;
+}
+
 #mobile-logo{
 	display: none;
 	color: #fff;

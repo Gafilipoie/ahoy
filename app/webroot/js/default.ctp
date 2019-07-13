@@ -125,7 +125,7 @@
 			//echo $this->Html->script('video.min');
 
 			//echo $this->Html->script('routie.min');
-			echo $this->Html->script('jquery.router');
+			echo $this->Html->script('jquery.router.min');
 			echo $this->Html->script('Object.Slider.Vertical');
 			echo $this->Html->script('Object.Slider.Horizontal');
 			echo $this->Html->script('Object.Slider.Text');
