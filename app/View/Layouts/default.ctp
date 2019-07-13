@@ -9,7 +9,7 @@
 			$pageTitle = ((isset($uriProject)) ? $uriProject.' | ' : '') . $uriCategory;
 
 			$metaTitle =  empty($pageTitle) ? $baseTitle : $pageTitle . ' --- AHOY STUDIOS';
-			$metaDescription = $uriProject.' | '.$uriCategory.' | '.$options['description'];
+			$metaDescription = (isset($uriProject) ? $uriProject.' | ' : '') . (isset($uriProject) ?$uriCategory.' | ' : '') . $options['description'];
 		?>
 		<title><?php echo $metaTitle ?></title>
 		<meta name="description" content="<?php echo $metaDescription ?>" />
