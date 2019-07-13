@@ -210,6 +210,7 @@ AddType text/x-vcard                        vcf
 
 # CSS and JavaScript
   ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType text/javascript           "access plus 1 year"
   ExpiresByType application/javascript    "access plus 1 year"
 
 </IfModule>

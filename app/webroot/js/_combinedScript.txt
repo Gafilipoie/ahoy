@@ -1,0 +1,12 @@
+List of combined files.
+In this order:
+
+modernizr.touch.js
+jquery.js
+imagesloaded.min.js
+video.min.js
+jquery.router.min.js
+Object.Slider.Vertical.min.js
+Object.Slider.Horizontal.min.js
+Object.Slider.Text.min.js
+script.min.js

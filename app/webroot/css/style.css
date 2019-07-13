@@ -1,4 +1,4 @@
-@import url('global.css') screen;
-@import url('slider.vertical.css') screen;
-@import url('slider.horizontal.css') screen;
-@import url('slider.text.css') screen;
+@import url('global.min.css') screen;
+@import url('slider.vertical.min.css') screen;
+@import url('slider.horizontal.min.css') screen;
+@import url('slider.text.min.css') screen;

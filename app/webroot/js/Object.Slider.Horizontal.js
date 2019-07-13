@@ -46,11 +46,10 @@ function HorizontalSlider() {
 				this.interruptGoTo = false;
 }
 
-function transformString(s) {
-	return s.toUpperCase().split('_').join(' ')
-}
-
 HorizontalSlider.prototype.setDocumentTitle = function() {
+	const transformString = function(s) {
+		return s.toUpperCase().split('_').join(' ');
+	}
 	const category = window.location.pathname.split('/')[2];
 	document.title = `${category ? transformString(category) + ' --- ' : ''}${this.baseTitle}`;
 }

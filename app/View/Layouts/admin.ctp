@@ -2,24 +2,10 @@
 <html>
     <head>
         <title>Ahoy</title>
-        <?php
-         echo $this->Html->css('admin');
-         echo $this->Html->css('fileuploader');
-         echo $this->Html->css('video-js');
-         echo $this->Html->script('fileuploader');
-
-         echo $this->Html->script('video.min.js');
-
-        ?>
-
-        <script type="text/javascript" >
-            var cakeRoot = '<?php echo Router::url('/', true) ?>';
-        </script>
+        <?php echo $this->Html->css(array('admin.min', 'fileuploader', 'video-js.min')); ?>
     </head>
 
     <body>
-
-
         <div id="wrapper">
 
             <div id="header" class="clearfix">
@@ -88,12 +74,19 @@
 
         </div>
 
+        <script type="text/javascript" >
+            var cakeRoot = '<?php echo Router::url('/', true) ?>';
+        </script>
         <?php
-            echo $this->Html->script('jquery');
-            echo $this->Html->script('jquery_ui');
-             echo $this->Html->script('jscolor');
-            echo $this->Html->script('../tiny_mce/jquery.tinymce');
-            echo $this->Html->script('admin');
+            echo $this->Html->script(array(
+                'fileuploader',
+                'video.min.js',
+                'jquery',
+                'jquery_ui',
+                'jscolor.min',
+                '../tiny_mce/jquery.tinymce',
+                'admin'
+            ), array('defer' => true));
         ?>
     </body>
 </html>

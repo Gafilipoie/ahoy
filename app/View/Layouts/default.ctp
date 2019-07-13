@@ -7,31 +7,41 @@
 			$uriCategory = (isset($uriPieces[2])) ? strtoupper(implode(" ", explode("_", $uriPieces[2]))) : null;
 			$uriProject = (isset($uriPieces[3])) ? strtoupper(implode(" ", explode("_", $uriPieces[3]))) : null;
 			$pageTitle = ((isset($uriProject)) ? $uriProject.' | ' : '') . $uriCategory;
+
+			$metaTitle =  empty($pageTitle) ? $baseTitle : $pageTitle . ' --- AHOY STUDIOS';
+			$metaDescription = $uriProject.' | '.$uriCategory.' | '.$options['description'];
 		?>
-		<?php echo $this->Html->charset(); ?>
+		<title><?php echo $metaTitle ?></title>
+		<meta name="description" content="<?php echo $metaDescription ?>" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-		<title>
-			<?php echo empty($pageTitle) ? $baseTitle : $pageTitle.' --- AHOY STUDIOS' ?>
-		</title>
-		<meta
-			name="description"
-			content="<?php echo $uriProject ?> <?php echo $uriCategory ?> <?php echo $options['description'] ?>"
-		/>
 		<meta name="keywords" content="<?php echo $options['keywords'] ?>" />
 		<meta name="author" content="Ahoy Studios" />
+		<meta http-equiv="Expires" content="30">
 
-		<!--<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">-->
-		<!--<script src="http://vjs.zencdn.net/c/video.js"></script>-->
-		<?php
-			echo $this->Html->css('boilerplate');
-			echo $this->Html->css('style');
-			echo $this->Html->css('video-js');
-		?>
+		<!-- SEO purposes -->
+		<meta property="og:type" content="Design Studio">
+		<meta property="og:image" content="https://ahoystudios.com/img/AHOYlogo.png">
+		<meta property="og:title" content="<?php echo $metaTitle ?>">
+		<meta property="og:description" content="<?php echo $metaDescription ?>">
+		<meta property="og:site_name" content="AHOY STUDIOS">
+		<meta property="og:url" content="https://ahoystudios.com">
+
+		<meta name="twitter:card" content="gallery">
+		<meta name="twitter:image" content="https://ahoystudios.com/img/AHOYlogo.png">
+		<meta name="twitter:title" content="<?php echo $metaTitle ?>">
+		<meta name="twitter:description" content="<?php echo $metaDescription ?>">
+		<meta name="twitter:site"  content="https://ahoystudios.com">
+		<meta name="twitter:url" content="https://ahoystudios.com">
+		<!-- SEO purposes -->
+
+		<?php echo $this->Html->charset(); ?>
+		<?php echo $this->Html->css(array('_combinedStyles.min')); ?>
 	</head>
 	 <body style="background: #fff url('/img/<?php echo $options['background_image'] ?>');">
-		<h1 class="hidden"><?php echo empty($pageTitle) ? $baseTitle : $pageTitle ?></h1> <!-- For SEO purposes -->
+		<h1 class="hidden"><?php echo $metaTitle ?></h1> <!-- For SEO purposes -->
 		<h2 class="hidden">Founded by Connie Koch and Aline Ozkan</h2> <!-- For SEO purposes -->
 		<p id="mobile-logo">AHOY</p>
+
 		<header id="mobile-menu">
 			<ul>
 				<?php foreach($categories as $category): ?>
@@ -160,39 +170,30 @@
 			<?php echo $this->fetch('content'); ?>
 		</div>
 
-		<script src="https://api.html5media.info/1.1.5/html5media.min.js"></script>
+		<?php
+			echo $this->Html->script(array(
+				'https://api.html5media.info/1.1.5/html5media.min.js',
+				'_combinedScript.min'
+			), array('defer' => true));
+		?>
+		<?php if(!empty($options['google_analytics'])): ?>
+			<script type="text/javascript">
+				var _gaq = _gaq || [];
+				_gaq.push(['_setAccount', '<?php echo $options["google_analytics"] ?>']);
+				_gaq.push(['_trackPageview']);
+
+				(function() {
+					var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+					ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+				})();
+			</script>
+		<?php endif;?>
+
 		<script type="text/javascript">
 			var json_options = <?php echo htmlspecialchars_decode($json_options); ?>;
 			var json_settings = <?php echo htmlspecialchars_decode($json_settings); ?>;
 			var cakeRoot = '<?php echo Router::url('/', true); ?>';
 		</script>
-
-		<?php
-			echo $this->Html->script('modernizr.touch.js');
-			echo $this->Html->script('jquery');
-			echo $this->Html->script('imagesloaded');
-			echo $this->Html->script('video.min.js');
-
-			//echo $this->Html->script('routie.min');
-			echo $this->Html->script('jquery.router.min');
-			echo $this->Html->script('Object.Slider.Vertical');
-			echo $this->Html->script('Object.Slider.Horizontal');
-			echo $this->Html->script('Object.Slider.Text');
-			echo $this->Html->script('script');
-		?>
-		<?php if(!empty($options['google_analytics'])): ?>
-	        <script type="text/javascript">
-
-	          var _gaq = _gaq || [];
-	          _gaq.push(['_setAccount', '<?php echo $options["google_analytics"] ?>']);
-	          _gaq.push(['_trackPageview']);
-
-	          (function() {
-	            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	          })();
-	        </script>
-	    <?php endif;?>
 	</body>
 </html>

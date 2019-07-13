@@ -86,14 +86,13 @@ function initApplication() {
 }
 
 function setDocumentTitle(pathName = '') {
+	const transformString = function(s) {
+		return s.toUpperCase().split('_').join(' ');
+	};
 	const path = pathName.split('/');
 	const project = path[3] && `${transformString(path[3])} | ` || '';
 	const category = path[2] && `${transformString(path[2])} --- ` || '';
 	document.title = project + category + window.baseTitle;
-}
-
-function transformString(s) {
-	return s.toUpperCase().split('_').join(' ')
 }
 
 function hideLoader() {

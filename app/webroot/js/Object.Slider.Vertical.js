@@ -47,11 +47,10 @@ function VerticalSlider() {
 	this.isMouseMoved = false;
 }
 
-function transformString(s) {
-	return s.toUpperCase().split('_').join(' ')
-}
-
 VerticalSlider.prototype.setDocumentTitle = function(project = '') {
+	const transformString = function(s) {
+		return s.toUpperCase().split('_').join(' ');
+	}
 	const category = window.location.pathname.split('/')[2];
 	document.title = `${project ? transformString(project) + ' | ' : ''}${transformString(category)} --- ${this.baseTitle}`;
 }
