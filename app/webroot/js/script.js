@@ -45,7 +45,7 @@ $(document).ready(function() {
 
 function initApplication() {
 	//Window variables
-	window.baseTitle = document.title.split('---')[0];
+	window.baseTitle = document.title.split('---')[1];
 	window.deviceWidth = $('body').width()
 	window.deviceHeight = $('body').height();
 	window.isMagicMouse = false;
@@ -87,9 +87,13 @@ function initApplication() {
 
 function setDocumentTitle(pathName = '') {
 	const path = pathName.split('/');
-	const project = path[3] ? `${path[3].toUpperCase()} | ` : '';
-	const category = path[2] ? `${path[2].toUpperCase()} | ` : '';
+	const project = path[3] && `${transformString(path[3])} | ` || '';
+	const category = path[2] && `${transformString(path[2])} --- ` || '';
 	document.title = project + category + window.baseTitle;
+}
+
+function transformString(s) {
+	return s.toUpperCase().split('_').join(' ')
 }
 
 function hideLoader() {

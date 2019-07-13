@@ -1,5 +1,5 @@
 function VerticalSlider() {
-	this.baseTitle = document.title.split('---')[0];
+	this.baseTitle = document.title.split('---')[1];
 	this.slider = $('#vertical-slider');
 	this.vContainer = $('#vertical-container');
 	this.vElements = $('#vertical-slider > ul');
@@ -47,9 +47,13 @@ function VerticalSlider() {
 	this.isMouseMoved = false;
 }
 
+function transformString(s) {
+	return s.toUpperCase().split('_').join(' ')
+}
+
 VerticalSlider.prototype.setDocumentTitle = function(project = '') {
 	const category = window.location.pathname.split('/')[2];
-	document.title = `${project ? project.toUpperCase() + ' | ' : ''}${category.toUpperCase()} | ${this.baseTitle}`;
+	document.title = `${project ? transformString(project) + ' | ' : ''}${transformString(category)} --- ${this.baseTitle}`;
 }
 
 /*************** GET FUNCTIONS ****************/

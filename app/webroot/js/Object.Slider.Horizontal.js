@@ -1,5 +1,5 @@
 function HorizontalSlider() {
-				this.baseTitle = document.title.split('---')[0];
+				this.baseTitle = document.title.split('---')[1];
 				this.slider = $('#horizontal-slider');
 				this.hContainer = $('#horizontal-container');
 				this.hElements = null;
@@ -46,9 +46,13 @@ function HorizontalSlider() {
 				this.interruptGoTo = false;
 }
 
+function transformString(s) {
+	return s.toUpperCase().split('_').join(' ')
+}
+
 HorizontalSlider.prototype.setDocumentTitle = function() {
 	const category = window.location.pathname.split('/')[2];
-	document.title = `${category ? category.toUpperCase() + ' | ' : ''}${this.baseTitle}`;
+	document.title = `${category ? transformString(category) + ' --- ' : ''}${this.baseTitle}`;
 }
 
 /*************** GET FUNCTIONS ****************/

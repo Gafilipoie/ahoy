@@ -1,5 +1,4 @@
 function TextSlider(){
-
 	this.slider = $('#text-slider');
 	this.tContainer = $('#text-container');
 	this.tElements = $('#text-slider > li');
