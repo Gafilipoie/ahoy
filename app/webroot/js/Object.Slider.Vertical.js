@@ -49,7 +49,7 @@ function VerticalSlider() {
 
 VerticalSlider.prototype.setDocumentTitle = function(project = '') {
 	const transformString = function(s) {
-		return s.toUpperCase().split('_').join(' ');
+		return s.toUpperCase().split('-').join(' ');
 	}
 	const category = window.location.pathname.split('/')[2];
 	document.title = `${project ? transformString(project) + ' | ' : ''}${transformString(category)} --- ${this.baseTitle}`;

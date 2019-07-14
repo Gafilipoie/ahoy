@@ -87,7 +87,7 @@ function initApplication() {
 
 function setDocumentTitle(pathName = '') {
 	const transformString = function(s) {
-		return s.toUpperCase().split('_').join(' ');
+		return s.toUpperCase().split('-').join(' ');
 	};
 	const path = pathName.split('/');
 	const project = path[3] && `${transformString(path[3])} | ` || '';

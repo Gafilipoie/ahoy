@@ -4,12 +4,13 @@
 		<?php
 			$baseTitle = 'AHOY STUDIOS – Graphic Design and Branding';
 			$uriPieces = explode('/', $_SERVER['REQUEST_URI']);
-			$uriCategory = (isset($uriPieces[2])) ? strtoupper(implode(" ", explode("_", $uriPieces[2]))) : null;
-			$uriProject = (isset($uriPieces[3])) ? strtoupper(implode(" ", explode("_", $uriPieces[3]))) : null;
+			$uriCategory = (isset($uriPieces[2])) ? strtoupper(implode(" ", explode("-", $uriPieces[2]))) : null;
+			$uriProject = (isset($uriPieces[3])) ? strtoupper(implode(" ", explode("-", $uriPieces[3]))) : null;
 			$pageTitle = ((isset($uriProject)) ? $uriProject.' | ' : '') . $uriCategory;
 
 			$metaTitle =  empty($pageTitle) ? $baseTitle : $pageTitle . ' --- AHOY STUDIOS';
-			$metaDescription = (isset($uriProject) ? $uriProject.' | ' : '') . (isset($uriProject) ?$uriCategory.' | ' : '') . $options['description'];
+			$metaDescription = $uriProject.' | '.$uriCategory.' | '.$options['description'];
+
 		?>
 		<title><?php echo $metaTitle ?></title>
 		<meta name="description" content="<?php echo $metaDescription ?>" />

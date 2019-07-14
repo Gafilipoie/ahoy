@@ -48,7 +48,7 @@ function HorizontalSlider() {
 
 HorizontalSlider.prototype.setDocumentTitle = function() {
 	const transformString = function(s) {
-		return s.toUpperCase().split('_').join(' ');
+		return s.toUpperCase().split('-').join(' ');
 	}
 	const category = window.location.pathname.split('/')[2];
 	document.title = `${category ? transformString(category) + ' --- ' : ''}${this.baseTitle}`;
