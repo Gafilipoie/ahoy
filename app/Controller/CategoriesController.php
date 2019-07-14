@@ -31,7 +31,7 @@ class CategoriesController extends AppController {
         $this->Category->id = $idCategory;
         $this->Category->saveField('active', 1);
         $this->redirect(array('controller' => 'projects', 'action' => 'index', $idCategory, 'admin' => true));
-       
+
     }
 
     function admin_categoryInActive($idCategory = null) {
@@ -39,36 +39,36 @@ class CategoriesController extends AppController {
         $this->Category->id = $idCategory;
         $this->Category->saveField('active', 0);
         $this->redirect(array('controller' => 'projects', 'action' => 'index', $idCategory, 'admin' => true));
-       
+
     }
 
     function admin_add() {
         $this->layout = 'admin';
         if (!empty($this->data)) {
             if (!empty($this->data['Category']['name_en'])) {
-                $this->request->data['Category']['slug'] = Inflector::slug($this->data['Category']['name_en']);
+                $this->request->data['Category']['slug'] = Inflector::slug($this->data['Category']['name_en'], $replacement = '-');
                 $this->Category->save($this->data);
                 $last_id =  $this->Category->id;
                 $this->redirect(array('controller' => 'categories', 'action' => 'index', 'admin' => true));
             }
         }
-        
+
     }
 
     function admin_edit($id = null) {
         $this->layout = 'admin';
         $this->set('category', $this->Category->read(null, $id));
         if (!empty($this->data)) {
-        
+
                 if (!empty($this->data['Category']['name_en'])) {
-                    $this->request->data['Category']['slug'] = Inflector::slug($this->data['Category']['name_en']);
+                    $this->request->data['Category']['slug'] = Inflector::slug($this->data['Category']['name_en'], $replacement = '-');
                 }
-        
+
                 $this->Category->save($this->data);
                 $last_id =  $this->data['Category']['id'];
                    $this->redirect(array('controller' => 'categories', 'action' => 'index', 'admin' => true));
-           
-         } 
+
+         }
     }
 
     function admin_saveOrder() {
@@ -90,13 +90,13 @@ class CategoriesController extends AppController {
         $this->autoRender = false;
         if (!empty($this->data)) {
             foreach ($this->data['Project']['order_rank'] as $key => $value) {
-               
+
                 $categoryproject = $this->Category->CategoryProject->find('first', array(
                     'recursive' => -1,
                     'conditions' => array('category_id' => $category_id, 'project_id' => $value)));
 
                 $this->Category->CategoryProject->id = $categoryproject['CategoryProject']['id'];
-                
+
                 $this->Category->CategoryProject->saveField('rank', $key);
             }
         }
@@ -126,7 +126,7 @@ class CategoriesController extends AppController {
         $data = $this->CategoryProject->find('all', array('conditions' => array('CategoryProject.category_id' => $cat_id)));
         foreach ($data as $key => $item) {
             $data = $this->Slide->find('first', array('conditions' => array('project_id' => $item['Project']['id'], 'active' => 1, 'is_cover' => 1, 'type' => 'image')));
-            if ($data != false)           
+            if ($data != false)
                 array_push($slides, $data);
         }
         $this->set('json_content',$slides);

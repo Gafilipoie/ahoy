@@ -26,7 +26,7 @@ $(document).ready(function() {
 	if(settings) mouseSens = parseFloat(settings.mouse_sens);
 
 	if (window.location.pathname == "/") {
-		const pathName = '/category/our_top_100';
+		const pathName = '/category/our-top-100';
 		routie(pathName);
 		setDocumentTitle(pathName)
 
@@ -314,9 +314,9 @@ function removeUnderscore(text) {
 }
 
 function getSlug(text) {
-	text = text.replace(/ & /g,"_");
+	text = text.replace(/ & /g,"-");
 	text = text.replace(/& /g,"");
-	return text.replace(/ /g,"_");
+	return text.replace(/ /g,"-");
 }
 
 function getFullImagePath(filename) {

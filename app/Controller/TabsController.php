@@ -5,10 +5,10 @@ class TabsController extends AppController {
 
 
     function view($category_slug = null, $json = false){
-     
 
-        $category = $this->Tab->Category->find('first', 
-            array( 
+
+        $category = $this->Tab->Category->find('first',
+            array(
                 'recursive' => -1,
                 'conditions' => array('Category.slug' => $category_slug)
             ));
@@ -16,9 +16,9 @@ class TabsController extends AppController {
 
         $this->Tab->Behaviors->attach('Containable');
 
-        $tabs = $this->Tab->find('all', 
-            array( 
-                'order' => array('Tab.rank', 'Tab.name_en'), 
+        $tabs = $this->Tab->find('all',
+            array(
+                'order' => array('Tab.rank', 'Tab.name_en'),
                 'conditions' => array(
                     'Tab.category_id' => $category['Category']['id'],
                 ),
@@ -30,7 +30,7 @@ class TabsController extends AppController {
                     ))
             ));
 
-        
+
         $category['Tab'] = $tabs;
 
         if($json == true){
@@ -43,7 +43,7 @@ class TabsController extends AppController {
             // die;
             $this->set(compact('category'));
 
-            $this->set('selected_menu', $category_slug);  
+            $this->set('selected_menu', $category_slug);
         }
     }
 
@@ -54,8 +54,8 @@ class TabsController extends AppController {
         $this->layout = 'admin';
 
         $this->set(compact('category_id'));
-        $this->set('tabs', $this->Tab->find('all', 
-            array( 'order' => array('Tab.rank', 'Tab.name_en'), 
+        $this->set('tabs', $this->Tab->find('all',
+            array( 'order' => array('Tab.rank', 'Tab.name_en'),
             'recursive' => -1,
             'conditions' => array('Tab.category_id' => $category_id),
             )));
@@ -70,12 +70,12 @@ class TabsController extends AppController {
 
         if (!empty($this->data)) {
             if (!empty($this->data['Tab']['name_en'])) {
-                $this->request->data['Tab']['slug'] = Inflector::slug($this->data['Tab']['name_en']);
+                $this->request->data['Tab']['slug'] = Inflector::slug($this->data['Tab']['name_en'], $replacement = '-');
                 $this->Tab->save($this->data['Tab']);
             }
 
             $this->redirect( array('controller' => 'tabs', 'action' => 'index', $this->data['Tab']['category_id'], 'admin' => true));
-        } 
+        }
 
 
 
@@ -83,7 +83,7 @@ class TabsController extends AppController {
 
     function admin_edit($id = null) {
         $this->layout = 'admin';
-        
+
         $tab =  $this->Tab->findById($id);
 
         $this->set('tab', $tab);
@@ -91,13 +91,13 @@ class TabsController extends AppController {
         if (!empty($this->data)) {
 
         	if (!empty($this->data['Tab']['name_en'])) {
-                $this->request->data['Tab']['slug'] = Inflector::slug($this->data['Tab']['name_en']);
+                $this->request->data['Tab']['slug'] = Inflector::slug($this->data['Tab']['name_en'], $replacement = '-');
                 $this->Tab->save($this->data['Tab']);
             }
 
             $this->redirect( array('controller' => 'tabs', 'action' => 'index', $this->data['Tab']['category_id'], 'admin' => true));
-           
-         } 
+
+         }
 
     }
 
@@ -109,11 +109,11 @@ class TabsController extends AppController {
         $tab = $this->Tab->read();
         $this->Tab->saveField('active', 1);
         $this->redirect(array('controller' => 'tabs', 'action' => 'index',$tab['Tab']['category_id'],'admin' => true));
-       
+
     }
 
     function admin_tabInActive($idtab = null) {
-    
+
         $this->autoRender = false;
         $this->Tab->id = $idtab;
         $tab = $this->Tab->read();

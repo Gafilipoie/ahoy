@@ -7,17 +7,17 @@ class ProjectsController extends AppController {
 
     function view($category_slug = null, $json = false){
 
-  
 
-        $category = $this->Project->CategoryProject->Category->find('first', 
-            array( 
+
+        $category = $this->Project->CategoryProject->Category->find('first',
+            array(
                 'recursive' => -1,
                 'conditions' => array('Category.slug' => $category_slug)
             ));
 
-        $projects = $this->Project->CategoryProject->find('all', 
-            array( 
-                'order' => array('CategoryProject.rank', 'CategoryProject.id'), 
+        $projects = $this->Project->CategoryProject->find('all',
+            array(
+                'order' => array('CategoryProject.rank', 'CategoryProject.id'),
                 'recursive' => 0,
                 'conditions' => array(
                     'CategoryProject.category_id' => $category['Category']['id'],
@@ -39,14 +39,14 @@ class ProjectsController extends AppController {
             if(is_array($slide)){
                 $projects[$key] = array_merge($project,$slide);
             }
-            
+
             else{
                 unset($projects[$key]);
-            
+
             }
 
         }
-         
+
         $category['Project'] = array_values($projects);
 
         if($json == true){
@@ -55,8 +55,8 @@ class ProjectsController extends AppController {
         }
 
         else{
-            $this->set(compact('category'));    
-            $this->set('selected_menu', $category_slug);  
+            $this->set(compact('category'));
+            $this->set('selected_menu', $category_slug);
             //debug($category);
         }
     }
@@ -66,13 +66,13 @@ class ProjectsController extends AppController {
     function admin_index() {
 
         $this->layout = 'admin';
-        
-      
+
+
 
 
         $this->set('left_menu', 'list');
-        $this->set('projects', $this->Project->find('all', 
-            array( 'order' => array('Project.name_en','Project.id'), 
+        $this->set('projects', $this->Project->find('all',
+            array( 'order' => array('Project.name_en','Project.id'),
             'recursive' => -1,
             )));
 
@@ -86,7 +86,7 @@ class ProjectsController extends AppController {
         $this->layout = 'admin';
 
 
-        $categories = $this->Project->CategoryProject->Category->find('list', 
+        $categories = $this->Project->CategoryProject->Category->find('list',
                 array(
                     'fields' => array('Category.id', 'Category.name_en'),
                     'order' => array('rank', 'id'),
@@ -94,12 +94,12 @@ class ProjectsController extends AppController {
                     'conditions' => array('Category.type' => 'projects'),
                 ));
 
-    
-        $this->set('categories', $categories); 
+
+        $this->set('categories', $categories);
 
         if (!empty($this->data)) {
             if (!empty($this->data['Project']['name_en'])) {
-                $this->request->data['Project']['slug'] = Inflector::slug($this->data['Project']['name_en']);
+                $this->request->data['Project']['slug'] = Inflector::slug($this->data['Project']['name_en'], $replacement = '-');
                 $this->Project->save($this->data['Project']);
 
                 $project_id = $this->Project->id;
@@ -112,12 +112,12 @@ class ProjectsController extends AppController {
                     $category_project[] = $cat_proj;
                 }
 
-                
+
                 $this->Project->CategoryProject->saveAll($category_project);
- 
+
                 $this->redirect(array('controller' => 'projects', 'action' => 'index', 'admin' => true));
             }
-        } 
+        }
 
 
 
@@ -125,7 +125,7 @@ class ProjectsController extends AppController {
 
     function admin_edit($id = null) {
         $this->layout = 'admin';
-        
+
         $project =  $this->Project->findById($id);
 
         $this->set('project', $project);
@@ -134,11 +134,11 @@ class ProjectsController extends AppController {
         foreach($project['CategoryProject'] as $cat_proj){
             $s_categories[] = $cat_proj['category_id'];
         }
-    
+
 
         $this->set(compact('s_categories'));
 
-        $categories = $this->Project->CategoryProject->Category->find('list', 
+        $categories = $this->Project->CategoryProject->Category->find('list',
                 array(
                     'fields' => array('Category.id', 'Category.name_en'),
                     'order' => array('rank', 'id'),
@@ -146,7 +146,7 @@ class ProjectsController extends AppController {
                     'conditions' => array('Category.type' => 'projects'),
                 ));
 
-    
+
         $this->set('categories', $categories);
 
 
@@ -154,12 +154,12 @@ class ProjectsController extends AppController {
         if (!empty($this->data)) {
 
                 if (!empty($this->data['Project']['name_en'])) {
-                    $this->request->data['Project']['slug'] = Inflector::slug($this->data['Project']['name_en']);
+                    $this->request->data['Project']['slug'] = Inflector::slug($this->data['Project']['name_en'], $replacement = '-');
                 }
                 $this->Project->save($this->data['Project']);
                 $project_id = $this->Project->id;
                 $category_project = array();
-                
+
                 $old_categories = $s_categories;
                 $new_categories = array();
 
@@ -182,12 +182,12 @@ class ProjectsController extends AppController {
 
                 $delete_categories = array_diff($old_categories, $new_categories);
 
-       
+
                 $this->Project->CategoryProject->deleteAll(array('project_id' => $project_id, 'category_id' => $delete_categories), false);
 
                 $this->redirect(array('controller' => 'projects', 'action' => 'index', 'admin' => true));
-           
-         } 
+
+         }
 
 
     }
@@ -199,7 +199,7 @@ class ProjectsController extends AppController {
         $this->Project->id = $idProject;
         $this->Project->saveField('active', 1);
         $this->redirect(array('controller' => 'projects', 'action' => 'index', 'admin' => true));
-       
+
     }
 
     function admin_projectInActive($idProject = null) {
