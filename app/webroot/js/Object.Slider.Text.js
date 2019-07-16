@@ -183,7 +183,6 @@ TextSlider.prototype.setData = function(json_data, url){
 		for(var j = 0; j < tab.Content.length; j++){
 			var content = tab.Content[j];
 			if(content.type == 'image'){
-				console.log(content);
 				var e_img = $('<img>').attr('src', getFullImagePath(content.image));
 				if(content.image_alt) e_img.attr('alt', content.image_alt);
 				if(content.image_title) e_img.attr('title', content.image_title);
