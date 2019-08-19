@@ -716,7 +716,7 @@ VerticalSlider.prototype.addEmptySlide = function(index, position) {
 	const projectSlug = String(self.jsonData.Project[index].Project.slug).toLowerCase();
 	var href  = appURL + "/slides/view/" + category;
 	var li_elem = $('<li id="vItem'+(index+1)+'"></li>');
-	var aimg_elem = $('<a href="'+href+'" title="'+projectSlug+'"></a>');
+	var aimg_elem = $('<a href="'+href+'" title=""></a>');
 	var h5_elem = $('<h5><span>'+self.jsonData.Project[index].Project.name_en+' / </span>'+self.jsonData.Project[index].Project.name_de+'</h5>');
 	h5_elem.children('span').css('color', options.primary_text_color);
 	// Social Media Share Buttons
@@ -829,7 +829,7 @@ VerticalSlider.prototype.loadNextImage = function() {
 		image_title = self.jsonData.Project[index-1].Slide.image_title;
 		var src = getFullImagePath(self.jsonData.Project[index-1].Slide.image);
 
-		$("<img>", { src: src, alt: image_alt || `image-${index}`, title: image_title }).on('load error', function() {
+		$("<img>", { src: src, alt: image_alt || `image-${index}`, title: "" }).on('load error', function() {
 			$('#vItem' + index).find('a').html(this);
 			self.alignImage($('#vItem' + index).find('img'));
 		});
