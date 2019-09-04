@@ -171,11 +171,21 @@
 			<?php echo $this->fetch('content'); ?>
 		</div>
 
+		<script src="https://api.html5media.info/1.1.5/html5media.min.js"></script>
 		<?php
-			echo $this->Html->script(array(
-				'https://api.html5media.info/1.1.5/html5media.min.js',
-				'_combinedScript.min'
-			), array('defer' => true));
+			echo $this->Html->script('modernizr.touch.js');
+			echo $this->Html->script('jquery');
+			echo $this->Html->script('imagesloaded');
+			echo $this->Html->script('video.min.js');
+
+			//echo $this->Html->script('routie.min');
+			echo $this->Html->script('jquery.router.min');
+			echo $this->Html->script('Object.Slider.Vertical');
+			echo $this->Html->script('Object.Slider.Horizontal');
+			echo $this->Html->script('Object.Slider.Text');
+			echo $this->Html->script('script');
+
+
 		?>
 		<?php if(!empty($options['google_analytics'])): ?>
 			<script type="text/javascript">
