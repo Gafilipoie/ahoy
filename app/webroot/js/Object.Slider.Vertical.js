@@ -1,5 +1,5 @@
 function VerticalSlider() {
-	this.baseTitle = document.title.split('---')[1];
+	this.baseTitle = 'AHOY STUDIOS';
 	this.slider = $('#vertical-slider');
 	this.vContainer = $('#vertical-container');
 	this.vElements = $('#vertical-slider > ul');

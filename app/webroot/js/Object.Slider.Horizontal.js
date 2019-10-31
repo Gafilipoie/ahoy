@@ -1,5 +1,5 @@
 function HorizontalSlider() {
-				this.baseTitle = document.title.split('---')[1];
+				this.baseTitle = 'AHOY STUDIOS';
 				this.slider = $('#horizontal-slider');
 				this.hContainer = $('#horizontal-container');
 				this.hElements = null;

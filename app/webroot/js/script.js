@@ -45,7 +45,7 @@ $(document).ready(function() {
 
 function initApplication() {
 	//Window variables
-	window.baseTitle = document.title.split('---')[1];
+	window.baseTitle = 'AHOY STUDIOS';
 	window.deviceWidth = $('body').width()
 	window.deviceHeight = $('body').height();
 	window.isMagicMouse = false;
