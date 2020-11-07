@@ -88,8 +88,8 @@ class AppController extends Controller {
 			Cache::write('settings',$settings);
 		}
 
+		$this->set('json_options', json_encode($options));
 		$this->set('json_settings', json_encode($settings));
-
 
 
 		$this->loadModel('Category');

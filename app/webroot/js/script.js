@@ -343,5 +343,5 @@ function sleep(ms)
 	}
 
 function trimString(text) {
-	return text.replace(/^\s+/, '').replace(/\s+$/, '')
+	return text.replace(/^\s+/, '').replace(/\s+$/, '');
 }
